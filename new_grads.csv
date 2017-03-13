@@ -1,0 +1,107 @@
+"","K12_SCHOOL_NAME","K12_GRAD_SCHOOL_YEAR","K12_DISTRICT_NUMBER","to_psi","count","town","latitude","longitude","percentage","psi_class","percent_helper"
+"1","Babine Elem-Secondary","2013/2014","091","CNC",1,"Granisle",54.887,-126.2084,0.5,"non-NWCC",0
+"2","Babine Elem-Secondary","2013/2014","091","VIU",1,"Granisle",54.887,-126.2084,0.5,"non-NWCC",0
+"3","Bear Valley School","2013/2014","082","No_transfer",1,"Stewart",55.9401,-129.99,0.5,"non-NWCC",0
+"4","Bear Valley School","2013/2014","082","UNBC",1,"Stewart",55.9401,-129.99,0.5,"non-NWCC",0
+"5","Bulkley Valley Education Connection","2013/2014","054","TRU",1,"Smithers",54.7395,-127.11435,0.0075187969924812,"non-NWCC",0
+"6","Bulkley Valley Education Connection","2013/2014","054","UNBC",1,"Smithers",54.7395,-127.11435,0.0075187969924812,"non-NWCC",0
+"7","Bulkley Valley Education Connection","2013/2014","054","No_transfer",1,"Smithers",54.7395,-127.11435,0.0075187969924812,"non-NWCC",0
+"8","Bulkley Valley Learning Centre","2013/2014","054","NWCC",2,"Smithers",54.7395,-127.11435,0.0150375939849624,"NWCC",0.0150375939849624
+"9","Bulkley Valley Learning Centre","2013/2014","054","NIC",1,"Smithers",54.7395,-127.11435,0.0075187969924812,"non-NWCC",0
+"10","Bulkley Valley Learning Centre","2013/2014","054","DOUG",1,"Smithers",54.7395,-127.11435,0.0075187969924812,"non-NWCC",0
+"11","Bulkley Valley Learning Centre","2013/2014","054","No_transfer",8,"Smithers",54.7395,-127.11435,0.0601503759398496,"non-NWCC",0
+"12","Caledonia Secondary","2013/2014","082","VIU",1,"Terrace",54.51905,-128.608,0.00546448087431694,"non-NWCC",0
+"13","Caledonia Secondary","2013/2014","082","SFU",4,"Terrace",54.51905,-128.608,0.0218579234972678,"non-NWCC",0
+"14","Caledonia Secondary","2013/2014","082","NWCC",66,"Terrace",54.51905,-128.608,0.360655737704918,"NWCC",0.360655737704918
+"15","Caledonia Secondary","2013/2014","082","CAM",1,"Terrace",54.51905,-128.608,0.00546448087431694,"non-NWCC",0
+"16","Caledonia Secondary","2013/2014","082","UBCV",1,"Terrace",54.51905,-128.608,0.00546448087431694,"non-NWCC",0
+"17","Caledonia Secondary","2013/2014","082","COTR",2,"Terrace",54.51905,-128.608,0.0109289617486339,"non-NWCC",0
+"18","Caledonia Secondary","2013/2014","082","OKAN",2,"Terrace",54.51905,-128.608,0.0109289617486339,"non-NWCC",0
+"19","Caledonia Secondary","2013/2014","082","UVIC",5,"Terrace",54.51905,-128.608,0.0273224043715847,"non-NWCC",0
+"20","Caledonia Secondary","2013/2014","082","TRU",3,"Terrace",54.51905,-128.608,0.0163934426229508,"non-NWCC",0
+"21","Caledonia Secondary","2013/2014","082","No_transfer",76,"Terrace",54.51905,-128.608,0.415300546448087,"non-NWCC",0
+"22","Caledonia Secondary","2013/2014","082","UNBC",4,"Terrace",54.51905,-128.608,0.0218579234972678,"non-NWCC",0
+"23","Caledonia Secondary","2013/2014","082","UBCO",1,"Terrace",54.51905,-128.608,0.00546448087431694,"non-NWCC",0
+"24","Charles Hays Secondary","2013/2014","052","UVIC",3,"Prince Rupert",54.342,-130.2658,0.03,"non-NWCC",0
+"25","Charles Hays Secondary","2013/2014","052","NWCC",32,"Prince Rupert",54.342,-130.2658,0.32,"NWCC",0.32
+"26","Charles Hays Secondary","2013/2014","052","CAM",2,"Prince Rupert",54.342,-130.2658,0.02,"non-NWCC",0
+"27","Charles Hays Secondary","2013/2014","052","BCIT",2,"Prince Rupert",54.342,-130.2658,0.02,"non-NWCC",0
+"28","Charles Hays Secondary","2013/2014","052","NLC",1,"Prince Rupert",54.342,-130.2658,0.01,"non-NWCC",0
+"29","Charles Hays Secondary","2013/2014","052","VIU",1,"Prince Rupert",54.342,-130.2658,0.01,"non-NWCC",0
+"30","Charles Hays Secondary","2013/2014","052","SFU",1,"Prince Rupert",54.342,-130.2658,0.01,"non-NWCC",0
+"31","Charles Hays Secondary","2013/2014","052","LANG",3,"Prince Rupert",54.342,-130.2658,0.03,"non-NWCC",0
+"32","Charles Hays Secondary","2013/2014","052","CNC",3,"Prince Rupert",54.342,-130.2658,0.03,"non-NWCC",0
+"33","Charles Hays Secondary","2013/2014","052","UBCV",1,"Prince Rupert",54.342,-130.2658,0.01,"non-NWCC",0
+"34","Charles Hays Secondary","2013/2014","052","No_transfer",45,"Prince Rupert",54.342,-130.2658,0.45,"non-NWCC",0
+"35","Charles Hays Secondary","2013/2014","052","UNBC",4,"Prince Rupert",54.342,-130.2658,0.04,"non-NWCC",0
+"36","Charles Hays Secondary","2013/2014","052","TRU",1,"Prince Rupert",54.342,-130.2658,0.01,"non-NWCC",0
+"37","George M Dawson Secondary","2013/2014","050","No_transfer",12,"Masset",54.0329,-132.1497,0.631578947368421,"non-NWCC",0
+"38","George M Dawson Secondary","2013/2014","050","CNC",1,"Masset",54.0329,-132.1497,0.0526315789473684,"non-NWCC",0
+"39","George M Dawson Secondary","2013/2014","050","DOUG",1,"Masset",54.0329,-132.1497,0.0526315789473684,"non-NWCC",0
+"40","George M Dawson Secondary","2013/2014","050","NWCC",1,"Masset",54.0329,-132.1497,0.0526315789473684,"NWCC",0.0526315789473684
+"41","George M Dawson Secondary","2013/2014","050","SFU",1,"Masset",54.0329,-132.1497,0.0526315789473684,"non-NWCC",0
+"42","George M Dawson Secondary","2013/2014","050","LANG",1,"Masset",54.0329,-132.1497,0.0526315789473684,"non-NWCC",0
+"43","George M Dawson Secondary","2013/2014","050","CAM",2,"Masset",54.0329,-132.1497,0.105263157894737,"non-NWCC",0
+"44","Hazelton Secondary","2013/2014","082","ECU",1,"Hazelton",54.79725,-128.9723,0.0232558139534884,"non-NWCC",0
+"45","Hazelton Secondary","2013/2014","082","OKAN",2,"Hazelton",54.79725,-128.9723,0.0465116279069767,"non-NWCC",0
+"46","Hazelton Secondary","2013/2014","082","NWCC",16,"Hazelton",54.79725,-128.9723,0.372093023255814,"NWCC",0.372093023255814
+"47","Hazelton Secondary","2013/2014","082","UBCO",2,"Hazelton",54.79725,-128.9723,0.0465116279069767,"non-NWCC",0
+"48","Hazelton Secondary","2013/2014","082","CNC",6,"Hazelton",54.79725,-128.9723,0.13953488372093,"non-NWCC",0
+"49","Hazelton Secondary","2013/2014","082","No_transfer",10,"Hazelton",54.79725,-128.9723,0.232558139534884,"non-NWCC",0
+"50","Hazelton Secondary","2013/2014","082","UNBC",1,"Hazelton",54.79725,-128.9723,0.0232558139534884,"non-NWCC",0
+"51","Hazelton Secondary","2013/2014","082","UBCV",1,"Hazelton",54.79725,-128.9723,0.0232558139534884,"non-NWCC",0
+"52","Hazelton Secondary","2013/2014","082","TRU",3,"Hazelton",54.79725,-128.9723,0.0697674418604651,"non-NWCC",0
+"53","Hazelton Secondary","2013/2014","082","DOUG",1,"Hazelton",54.79725,-128.9723,0.0232558139534884,"non-NWCC",0
+"54","Houston Secondary","2013/2014","054","No_transfer",11,"Houston",54.3968,-126.6452,0.379310344827586,"non-NWCC",0
+"55","Houston Secondary","2013/2014","054","TRU",2,"Houston",54.3968,-126.6452,0.0689655172413793,"non-NWCC",0
+"56","Houston Secondary","2013/2014","054","CNC",2,"Houston",54.3968,-126.6452,0.0689655172413793,"non-NWCC",0
+"57","Houston Secondary","2013/2014","054","UVIC",3,"Houston",54.3968,-126.6452,0.103448275862069,"non-NWCC",0
+"58","Houston Secondary","2013/2014","054","KPU",1,"Houston",54.3968,-126.6452,0.0344827586206897,"non-NWCC",0
+"59","Houston Secondary","2013/2014","054","UNBC",1,"Houston",54.3968,-126.6452,0.0344827586206897,"non-NWCC",0
+"60","Houston Secondary","2013/2014","054","NWCC",8,"Houston",54.3968,-126.6452,0.275862068965517,"NWCC",0.275862068965517
+"61","Houston Secondary","2013/2014","054","LANG",1,"Houston",54.3968,-126.6452,0.0344827586206897,"non-NWCC",0
+"62","Kitimat City High","2013/2014","082","NWCC",2,"Kitimat",54.2832,-128.57935,0.025974025974026,"NWCC",0.025974025974026
+"63","Kitimat City High","2013/2014","082","No_transfer",5,"Kitimat",54.2832,-128.57935,0.0649350649350649,"non-NWCC",0
+"64","Mount Elizabeth Middle/Secondary","2013/2014","082","UNBC",5,"Kitimat",54.2832,-128.57935,0.0649350649350649,"non-NWCC",0
+"65","Mount Elizabeth Middle/Secondary","2013/2014","082","CNC",1,"Kitimat",54.2832,-128.57935,0.012987012987013,"non-NWCC",0
+"66","Mount Elizabeth Middle/Secondary","2013/2014","082","CAM",2,"Kitimat",54.2832,-128.57935,0.025974025974026,"non-NWCC",0
+"67","Mount Elizabeth Middle/Secondary","2013/2014","082","JIBC",1,"Kitimat",54.2832,-128.57935,0.012987012987013,"non-NWCC",0
+"68","Mount Elizabeth Middle/Secondary","2013/2014","082","TRU",2,"Kitimat",54.2832,-128.57935,0.025974025974026,"non-NWCC",0
+"69","Mount Elizabeth Middle/Secondary","2013/2014","082","OKAN",3,"Kitimat",54.2832,-128.57935,0.038961038961039,"non-NWCC",0
+"70","Mount Elizabeth Middle/Secondary","2013/2014","082","UBCO",1,"Kitimat",54.2832,-128.57935,0.012987012987013,"non-NWCC",0
+"71","Mount Elizabeth Middle/Secondary","2013/2014","082","NWCC",12,"Kitimat",54.2832,-128.57935,0.155844155844156,"NWCC",0.155844155844156
+"72","Mount Elizabeth Middle/Secondary","2013/2014","082","COTR",1,"Kitimat",54.2832,-128.57935,0.012987012987013,"non-NWCC",0
+"73","Mount Elizabeth Middle/Secondary","2013/2014","082","UVIC",3,"Kitimat",54.2832,-128.57935,0.038961038961039,"non-NWCC",0
+"74","Mount Elizabeth Middle/Secondary","2013/2014","082","VCC",1,"Kitimat",54.2832,-128.57935,0.012987012987013,"non-NWCC",0
+"75","Mount Elizabeth Middle/Secondary","2013/2014","082","SFU",1,"Kitimat",54.2832,-128.57935,0.012987012987013,"non-NWCC",0
+"76","Mount Elizabeth Middle/Secondary","2013/2014","082","No_transfer",37,"Kitimat",54.2832,-128.57935,0.480519480519481,"non-NWCC",0
+"77","Nisga'a Secondary","2013/2014","092","LANG",1,"New Aiyansh",55.2834,-129.0503,0.0833333333333333,"non-NWCC",0
+"78","Nisga'a Secondary","2013/2014","092","NWCC",4,"New Aiyansh",55.2834,-129.0503,0.333333333333333,"NWCC",0.333333333333333
+"79","Nisga'a Secondary","2013/2014","092","UNBC",1,"New Aiyansh",55.2834,-129.0503,0.0833333333333333,"non-NWCC",0
+"80","Nisga'a Secondary","2013/2014","092","DOUG",1,"New Aiyansh",55.2834,-129.0503,0.0833333333333333,"non-NWCC",0
+"81","Nisga'a Secondary","2013/2014","092","CAM",1,"New Aiyansh",55.2834,-129.0503,0.0833333333333333,"non-NWCC",0
+"82","Nisga'a Secondary","2013/2014","092","No_transfer",4,"New Aiyansh",55.2834,-129.0503,0.333333333333333,"non-NWCC",0
+"83","North Coast Distance Education","2013/2014","082","No_transfer",9,"Terrace",54.51905,-128.608,0.0491803278688525,"non-NWCC",0
+"84","Pacific Coast School","2013/2014","052","No_transfer",1,"Prince Rupert",54.342,-130.2658,0.01,"non-NWCC",0
+"85","Parkside Secondary","2013/2014","082","NWCC",1,"Terrace",54.51905,-128.608,0.00546448087431694,"NWCC",0.00546448087431694
+"86","Parkside Secondary","2013/2014","082","No_transfer",7,"Terrace",54.51905,-128.608,0.0382513661202186,"non-NWCC",0
+"87","Queen Charlotte Secondary","2013/2014","050","UVIC",4,"Queen Charlotte City",53.255,-132.0869,0.2,"non-NWCC",0
+"88","Queen Charlotte Secondary","2013/2014","050","NIC",1,"Queen Charlotte City",53.255,-132.0869,0.05,"non-NWCC",0
+"89","Queen Charlotte Secondary","2013/2014","050","LANG",1,"Queen Charlotte City",53.255,-132.0869,0.05,"non-NWCC",0
+"90","Queen Charlotte Secondary","2013/2014","050","CNC",1,"Queen Charlotte City",53.255,-132.0869,0.05,"non-NWCC",0
+"91","Queen Charlotte Secondary","2013/2014","050","No_transfer",6,"Queen Charlotte City",53.255,-132.0869,0.3,"non-NWCC",0
+"92","Queen Charlotte Secondary","2013/2014","050","SFU",3,"Queen Charlotte City",53.255,-132.0869,0.15,"non-NWCC",0
+"93","Queen Charlotte Secondary","2013/2014","050","CAM",2,"Queen Charlotte City",53.255,-132.0869,0.1,"non-NWCC",0
+"94","Queen Charlotte Secondary","2013/2014","050","NWCC",2,"Queen Charlotte City",53.255,-132.0869,0.1,"NWCC",0.1
+"95","Smithers Secondary","2013/2014","054","UVIC",11,"Smithers",54.7395,-127.11435,0.0827067669172932,"non-NWCC",0
+"96","Smithers Secondary","2013/2014","054","NIC",1,"Smithers",54.7395,-127.11435,0.0075187969924812,"non-NWCC",0
+"97","Smithers Secondary","2013/2014","054","BCIT",1,"Smithers",54.7395,-127.11435,0.0075187969924812,"non-NWCC",0
+"98","Smithers Secondary","2013/2014","054","UNBC",10,"Smithers",54.7395,-127.11435,0.075187969924812,"non-NWCC",0
+"99","Smithers Secondary","2013/2014","054","SFU",2,"Smithers",54.7395,-127.11435,0.0150375939849624,"non-NWCC",0
+"100","Smithers Secondary","2013/2014","054","JIBC",1,"Smithers",54.7395,-127.11435,0.0075187969924812,"non-NWCC",0
+"101","Smithers Secondary","2013/2014","054","ECU",1,"Smithers",54.7395,-127.11435,0.0075187969924812,"non-NWCC",0
+"102","Smithers Secondary","2013/2014","054","UBCV",2,"Smithers",54.7395,-127.11435,0.0150375939849624,"non-NWCC",0
+"103","Smithers Secondary","2013/2014","054","No_transfer",65,"Smithers",54.7395,-127.11435,0.488721804511278,"non-NWCC",0
+"104","Smithers Secondary","2013/2014","054","NWCC",18,"Smithers",54.7395,-127.11435,0.135338345864662,"NWCC",0.135338345864662
+"105","Smithers Secondary","2013/2014","054","CNC",4,"Smithers",54.7395,-127.11435,0.0300751879699248,"non-NWCC",0
+"106","Smithers Secondary","2013/2014","054","LANG",2,"Smithers",54.7395,-127.11435,0.0150375939849624,"non-NWCC",0

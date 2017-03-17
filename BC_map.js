@@ -1,5 +1,4 @@
 function draw(geo_data){
-		function draw(geo_data){
 					"use strict";
 					var margin=75,
 						width=900 - margin,
@@ -11,6 +10,10 @@ function draw(geo_data){
 						.append('h2')
 						.text('First Transfer Highschool Data');
 
+					d3.select('body')
+						.append('h3')
+						.text('To use this application, simply click on a year to the left. Following this, click on a circle to select that graduating class. Statistics will be displayed to the right')
+
 					var svg1=d3.select('body')
 						.append('svg')
 						.attr('width', width+margin)
@@ -20,7 +23,7 @@ function draw(geo_data){
 
 					var projection = d3.geo.mercator()
     					.scale(1600)
-    					.translate([4100, 2100]);
+    					.translate([4050, 2110]);
 
 					var path=d3.geo.path().projection(projection);
 
@@ -46,18 +49,21 @@ function draw(geo_data){
 
 
 
+
+
 			function plotting(data){
 		
 				let raw_data = data
 
 				var years = [];
 
-				for (var i = 2002; i < 2016; i += 1){
+				for (var i = 2004; i < 2014; i += 1){
 					var y = i + 1
 					years.push(i +  '-' + y);
 				};
 
 				//LEFT SIDE BUTTONS
+				
 
 				var buttons = d3.select("body")
 	                        .append("div")

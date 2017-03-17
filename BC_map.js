@@ -48,6 +48,7 @@ function draw(geo_data){
 						.attr('class', 'side_graph');
 
 
+					
 
 
 
@@ -164,11 +165,8 @@ function draw(geo_data){
 									.domain([0, max_students])
 									.range([0, 15]);
 
-					d3.selectAll('circle')
-						.transition()
-						.duration(400)
-						.attr('r', 0)
-						.remove();
+					d3.selectAll('circle').transition().duration(200).attr('r', 0).remove();
+					
 
 					d3.selectAll('.rect-market')
 						.remove();
@@ -184,6 +182,7 @@ function draw(geo_data){
 
 					d3.selectAll('.cip-rect').remove();
 
+					
 
 					svg1.append('g')
 							.attr('class', 'bubble')
@@ -195,12 +194,13 @@ function draw(geo_data){
 							.append('circle')
 							.attr('cx', function(d){return d.values['lat'];})
 							.attr('cy', function(d){return d.values['long'];})
-							.attr('r', 0)
+			
 							
 							.attr('stroke', 'black')
 							.attr('stroke-width', 0.3)
 							.attr('fill', 'rgb(247, 148, 32)')
 							.attr('opacity', 0.7)
+							.attr('r', 0)
 							.transition()
 							.duration(400)
 							.delay(400)
@@ -375,57 +375,14 @@ function draw(geo_data){
 
 							
 
-								var max_students = d3.max(subData, function(d){
-									return d.values['students'];
-								})
 
-								var bar1_scale = d3.scale.linear()
-													.domain([0, max_students])
-													.range([0, 100])
-
-
-								let xaxis_market = 150
-
-								svg2.append('text')
-									.attr('class', 'subtitles')
-									.attr('x', 0)
-									.attr('y', xaxis_market - subtitle_margin)
-									.text('Market Share: ' + filtered[0]['key'] + ', ' + ay)
-
-								svg2.selectAll('.rect-market')
-								   .data(subData.sort(function(a, b){return b.values['students'] - a.values['students'];}))
-								   .enter()
-								   .append('g')
-								   .append("rect")
-								   .attr('class', 'rect-market')
-								   .attr("x", function(d, i){return i * 40;})
-								   .attr("y", function(d){
-								   		return xaxis_market - bar1_scale(d.values['students']);
-								   	})
-								   .attr("width", 10)
-								   .attr("height", function(d){
-								   		return bar1_scale(d.values['students']);
-								   	})
-								   .attr('fill', function(d){
-								   		return (d['key']=='NWCC' ? 'orange': 'black');
-								  })
-								   .attr('opacity', 0.6)
-								   .style('visibility', 'visible')
-								   .on('mouseover', function(d, i){
-								   		d3.select(this)
-								   			.attr('opacity', 1)
-								   		mouse_hover(d, i, xaxis_market);
-
-								   })
-								   .on('mouseout', function(d){
-								   		d3.select(this)
-								   			.attr('opacity', 0.6)
-								   		d3.selectAll('.market-hover')
-								   			.remove()
-								   })
 
 								 function demographics(demographics_data){
-								 	let dem_data = demographics_data.filter(function(d){
+									 	var max_students = d3.max(subData, function(d){
+										return d.values['students'];
+									})
+
+									 let dem_data = demographics_data.filter(function(d){
 								 		return d['K12_GRAD_SCHOOL_YEAR']==ay
 								 	})
 
@@ -436,7 +393,6 @@ function draw(geo_data){
 								 	let dem_data_loc = dem_data_slim.filter(function(d){
 								 		return d['town']==clicked
 								 	})
-
 
 
 								 	
@@ -471,6 +427,132 @@ function draw(geo_data){
 								 						};
 								 					})
 								 					.entries(dem_data_loc)
+
+									var bar1_scale = d3.scale.linear()
+														.domain([0, max_students])
+														.range([0, 100])
+
+
+									let xaxis_market = 150
+
+									svg2.append('text')
+										.attr('class', 'subtitles')
+										.attr('x', 0)
+										.attr('y', xaxis_market - subtitle_margin)
+										.text('Market Share: ' + filtered[0]['key'] + ', ' + ay)
+
+									svg2.selectAll('.rect-market')
+									   .data(subData.sort(function(a, b){return b.values['students'] - a.values['students'];}))
+									   .enter()
+									   .append('g')
+									   .append("rect")
+									   .attr('class', 'rect-market')
+									   .attr("x", function(d, i){return i * 40;})
+									   .attr("y", function(d){
+									   		return xaxis_market - bar1_scale(d.values['students']);
+									   	})
+									   .attr("width", 10)
+									   .attr("height", function(d){
+									   		return bar1_scale(d.values['students']);
+									   	})
+									   .attr('fill', function(d){
+									   		return (d['key']=='NWCC' ? 'orange': 'black');
+									  })
+									   .attr('opacity', 0.6)
+									   .style('visibility', 'visible')
+									   .on('mouseover', function(d, i){
+									   		d3.select(this)
+									   			.attr('opacity', 1)
+									   		mouse_hover(d, i, xaxis_market);
+
+									   		let current_selection_market=d['key'];
+
+									   		let nest_market_data = dem_data_loc.filter(function(d){
+									   			return d['to_psi']==current_selection_market;
+									   		})
+
+									   		let age_nest_market = d3.nest()
+									   								.key(function(d){
+									   									return d['PSI_AGE']
+									   								})
+									   								.rollup(function(leaves){
+
+									   									var total=d3.sum(leaves, function(d){
+									   										return d['count'];
+									   									})
+
+									   									return {
+									   										'students':total
+									   									}
+									   								})
+									   								.entries(nest_market_data)
+
+
+									   		svg2.selectAll('.rect-market-hover')
+												.data(age_nest_market)
+												.enter()
+												.append('g')
+												.append('rect')
+												.attr('class', 'rect-market-hover')
+												.attr("x", function(d, i){return i * 40;})
+										   		.attr('fill', 'rgb(226, 71, 100)')
+										   		.attr('y', function(d){return xaxis_demographics})
+										   		.attr("width", 10)
+										   		.attr('height', 0)
+										   		.transition()
+										   		.duration(1000)
+										   		.attr("y", function(d){return xaxis_demographics- bar2_scale(d.values['students']);})
+										   		.attr("height", function(d){return bar2_scale(d.values['students']);})
+										   		.attr('opacity', 1)
+											    .style('visibility', 'visible')
+
+
+											 let cip_nest_market = d3.nest()
+									   								.key(function(d){
+									   									return d['PSI_CIP_2DIGIT_DESCRIPTION']
+									   								})
+									   								.rollup(function(leaves){
+
+									   									var total=d3.sum(leaves, function(d){
+									   										return d['count'];
+									   									})
+
+									   									return {
+									   										'students':total
+									   									}
+									   								})
+									   								.entries(nest_market_data)
+
+
+									   		svg2.selectAll('.rect-market-hover')
+												.data(cip_nest_market)
+												.enter()
+												.append('g')
+												.append('rect')
+												.attr('class', 'rect-market-hover')
+												.attr("x", function(d, i){return i * 40;})
+										   		.attr('fill', 'rgb(226, 71, 100)')
+										   		.attr('y', function(d){return xaxis_cip})
+										   		.attr("width", 10)
+										   		.attr('height', 0)
+										   		.transition()
+										   		.duration(1000)
+										   		.attr("y", function(d){return xaxis_cip - bar3_scale(d.values['students']);})
+										   		.attr("height", function(d){return bar3_scale(d.values['students']);})
+										   		.attr('opacity', 1)
+											    .style('visibility', 'visible')
+
+									   })
+									   .on('mouseout', function(d){
+									   		d3.select(this)
+									   			.attr('opacity', 0.6)
+									   		d3.selectAll('.market-hover')
+									   			.remove()
+									   		d3.selectAll('.rect-market-hover')
+									   			.remove()
+									   })
+
+								 	
 
 
 
@@ -543,11 +625,12 @@ function draw(geo_data){
 										.attr("y", xaxis_demographics + 16)
 										.text(function(d){return d['key'];})
 
+									var cip_sorted=cip_nest.sort(function(a, b){
+										return b.values['students'] - a.values['students'];
+									})
 
 									svg2.selectAll('.cip-rect')
-										.data(cip_nest.sort(function(a, b){
-											return b.values['students'] - a.values['students'];
-										}))
+										.data(cip_nest)
 										.enter()
 										.append('g')
 										.append('rect')

@@ -1,4 +1,54 @@
-function draw(geo_data){
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<style>
+h2 {
+		font-family: Tahoma;
+		text-align: center;
+}
+
+h3 {
+		font-family: "Courier New";
+		font-style: italic;
+		font-size: 12px;
+		text-align: center;
+}
+
+.market-hover {
+		font-family: "Courier New";
+		font-style: italic;
+		font-size: 12px;
+}
+
+.years_buttons div {
+        background-color: rgb(251, 201, 127);
+        padding: 3px;
+        margin: 7px;
+}
+
+.years_buttons {
+        position: absolute;
+        top: 85px;
+        left: 50px;
+        cursor: pointer;
+}
+
+.age_xaxis{
+      	font-family: "Courier New";
+      	font-style: italic;
+      	font-size: 10px;
+}
+
+.circle {
+     	cursor: pointer;
+}
+	</style>
+
+	<script type="text/javascript">
+		
+		function draw(geo_data){
 					"use strict";
 					var margin=75,
 						width=900 - margin,
@@ -39,16 +89,23 @@ function draw(geo_data){
 					var w = 500;
 					var h = 200;
 					var barPadding=1;
+					var svg2width=1600
 
 					var svg2=d3.select('body')
 						.append('svg')
-						.attr('width', 1600 - (width + margin))
+						.attr('width', svg2width - (width + margin))
 						.attr('height', height + margin)
 						.append('g')
 						.attr('class', 'side_graph');
 
 
-					
+					var svg3=d3.select('body')
+						.append('svg')
+						.attr('width', svg2width - (width + margin))
+						.attr('height', height+ margin)
+						.append('g')
+						.attr('class', 'comp_graphs')
+
 
 
 
@@ -77,20 +134,20 @@ function draw(geo_data){
 	                            return d;
                         	})
                         	.on('click', function(d){
-                        	d3.select(".years_buttons")
-		                      .selectAll("div")
-		                      .transition()
-		                      .duration(500)
-		                      .style("color", "black")
-		                      .style("background", "rgb(251, 201, 127)");
+	                        	d3.select(".years_buttons")
+			                      .selectAll("div")
+			                      .transition()
+			                      .duration(500)
+			                      .style("color", "black")
+			                      .style("background", "rgb(251, 201, 127)");
 
-		                    d3.select(this)
-		                      .transition()
-		                      .duration(500)
-		                      .style("background", "lightBlue")
-		                      .style("color", "white");
+			                    d3.select(this)
+			                      .transition()
+			                      .duration(500)
+			                      .style("background", "lightBlue")
+			                      .style("color", "white");
 
-		                   update(d);
+			                   update(d);
 
 							});
 
@@ -166,53 +223,41 @@ function draw(geo_data){
 									.range([0, 15]);
 
 
-					d3.selectAll('.rect-market')
-						.remove();
+					d3.selectAll('.rect-market').remove();
 
-					d3.selectAll('.age-rect')
-						.remove();
+					d3.selectAll('.age-rect').remove();
 
-					d3.selectAll('.subtitles')
-						.remove();
+					d3.selectAll('.subtitles').remove();
 
-					d3.selectAll('.age_xaxis')
-						.remove();
+					d3.selectAll('.age_xaxis').remove();
 
 					d3.selectAll('.cip-rect').remove();
 
+					d3.selectAll('.rect-market-click').remove()
+									   			
+					d3.selectAll('.rect-cip-click').remove()
+
+
+
+					d3.selectAll('circle')
+						.transition()
+						.duration(400)
+						.attr('r', 0)
+						.remove()
 					
-					var circle=svg1.selectAll('circle')
-						.data(nested.sort(function(a, b){
-							return b.values['students'] - a.values['students'];
-						}))
-
-					circle.exit().remove();
-
-					circle.enter().append('circle')
-						.attr('r', function(d){return radius(d.values['students']);})
-						.attr('cx', function(d){return d.values['lat'];})
-						.attr('cy', function(d){return d.values['long'];})
-						.attr('stroke', 'black')
-						.attr('stroke-width', 0.3)
-						.attr('fill', 'rgb(247, 148, 32)')
-						.attr('opacity', 0.7)
-					
-					circle.append('circle').merge(circle)
-							.attr('cx', function(d){return d.values['lat'];})
-							.attr('cy', function(d){return d.values['long'];})
-							.attr('r', function(d){return radius(d.values['students']);})
-
-debugger;
 					var circles = svg1.append('g')
 							.attr('class', 'bubble')
 							.selectAll('circle')
 							.data(nested.sort(function(a, b){
 								return b.values['students'] - a.values['students'];
 							}), function(d){return d['key'];})
-
+							.enter()
 							.append('circle')
 							.attr('cx', function(d){return d.values['lat'];})
 							.attr('cy', function(d){return d.values['long'];})
+							.attr('r', 0)
+							.transition()
+							.duration(800)
 							.attr('r', function(d){return radius(d.values['students']);})
 							.attr('stroke', 'black')
 							.attr('stroke-width', 0.3)
@@ -386,9 +431,6 @@ debugger;
 								var subArray=filtered.map(function(d){return d.values;})
 								var subData=subArray[0]
 
-							
-
-
 
 								 function demographics(demographics_data){
 									 	var max_students = d3.max(subData, function(d){
@@ -428,15 +470,20 @@ debugger;
 
 								 	let cip_nest=d3.nest()
 								 					.key(function(d){
-								 						return d['PSI_CIP_2DIGIT_DESCRIPTION']
+								 						return d['simplified_cip']
 								 					})
 								 					.rollup(function(leaves){
 								 						var total=d3.sum(leaves, function(d){
 								 							return d['count']
 								 						})
 
+								 						var helper=d3.median(leaves, function(d){
+								 							return d['cip_helper']
+								 						})
+
 								 						return {
-								 							'students': total
+								 							'students': total,
+								 							'helper': helper
 								 						};
 								 					})
 								 					.entries(dem_data_loc)
@@ -478,7 +525,11 @@ debugger;
 									   			.attr('opacity', 1)
 									   		mouse_hover(d, i, xaxis_market);
 
+									   		//PLEASE FUNCTIONALIZE ME
+
 									   		let current_selection_market=d['key'];
+
+
 
 									   		let nest_market_data = dem_data_loc.filter(function(d){
 									   			return d['to_psi']==current_selection_market;
@@ -507,7 +558,7 @@ debugger;
 												.append('g')
 												.append('rect')
 												.attr('class', 'rect-market-hover')
-												.attr("x", function(d, i){return i * 40;})
+												.attr("x", function(d, i){return (d['key']-17) * 40;})
 										   		.attr('fill', 'rgb(226, 71, 100)')
 										   		.attr('y', function(d){return xaxis_demographics})
 										   		.attr("width", 10)
@@ -522,7 +573,76 @@ debugger;
 
 											 let cip_nest_market = d3.nest()
 									   								.key(function(d){
-									   									return d['PSI_CIP_2DIGIT_DESCRIPTION']
+									   									return d['simplified_cip']
+									   								})
+									   								.rollup(function(leaves){
+
+
+									   									var total=d3.sum(leaves, function(d){
+									   										return d['count'];
+									   									})
+
+									   									var helper=d3.median(leaves, function(d){
+									   										return d['cip_helper']
+									   									})
+
+									   									return {
+									   										'students':total,
+									   										'helper':helper
+									   									}
+									   								})
+									   								.entries(nest_market_data)
+
+
+									   		svg2.selectAll('.rect-cip-hover')
+												.data(cip_nest_market)
+												.enter()
+												.append('g')
+												.append('rect')
+												.attr('class', 'rect-cip-hover')
+												.attr("x", function(d, i){return +d.values['helper'] * 40;})
+										   		.attr('fill', 'rgb(226, 71, 100)')
+										   		.attr('y', function(d){return xaxis_cip})
+										   		.attr("width", 10)
+										   		.attr('height', 0)
+										   		.transition()
+										   		.duration(1000)
+										   		.attr("y", function(d){return xaxis_cip - bar3_scale(d.values['students']);})
+										   		.attr("height", function(d){return bar3_scale(d.values['students']);})
+										   		.attr('opacity', 1)
+											    .style('visibility', 'visible')
+
+
+									   })
+
+									   
+
+									   .on('mouseout', function(d){
+									   		d3.select(this)
+									   			.attr('opacity', 0.6)
+									   		d3.selectAll('.market-hover').remove()
+									   			
+									   		d3.selectAll('.rect-market-hover').remove()
+									   			
+									   		d3.selectAll('.rect-cip-hover').remove()
+									   })
+									   .on('click', function(d){
+
+
+									   		d3.selectAll('.rect-market-click').remove()
+									   		d3.selectAll('.rect-cip-click').remove()
+
+									   		var current_selection_market=d['key'];
+
+
+
+									   		let nest_market_data = dem_data_loc.filter(function(d){
+									   			return d['to_psi']==current_selection_market;
+									   		})
+
+									   		let age_nest_market = d3.nest()
+									   								.key(function(d){
+									   									return d['PSI_AGE']
 									   								})
 									   								.rollup(function(leaves){
 
@@ -537,32 +657,101 @@ debugger;
 									   								.entries(nest_market_data)
 
 
-									   		svg2.selectAll('.rect-market-hover')
+									   		svg2.selectAll('.rect-market-click')
+												.data(age_nest_market)
+												.enter()
+												.append('g')
+												.append('rect')
+												.attr('class', 'on-click')
+												.attr('class', 'rect-market-click')
+												.attr("x", function(d, i){return (d['key']-17) * 40;})
+										   		.attr('fill', 'rgb(226, 71, 100)')
+										   		.attr("width", 10)
+										   		.attr("y", function(d){return xaxis_demographics- bar2_scale(d.values['students']);})
+										   		.attr("height", function(d){return bar2_scale(d.values['students']);})
+										   		.attr('opacity', 0.7)
+											    .style('visibility', 'visible')
+											    .on('mouseover', function(){
+											    	d3.select(this).attr('opacity', 1)
+											    })
+											    .on('mouseout', function(){
+											    	d3.select(this).attr('opacity', 0.7)
+											    })
+
+
+											 let cip_nest_market = d3.nest()
+									   								.key(function(d){
+									   									return d['simplified_cip']
+									   								})
+									   								.rollup(function(leaves){
+
+
+									   									var total=d3.sum(leaves, function(d){
+									   										return d['count'];
+									   									})
+
+									   									var helper=d3.median(leaves, function(d){
+									   										return d['cip_helper']
+									   									})
+
+									   									return {
+									   										'students':total,
+									   										'helper':helper
+									   									}
+									   								})
+									   								.entries(nest_market_data)
+
+
+									   		svg2.selectAll('.rect-cip-click')
 												.data(cip_nest_market)
 												.enter()
 												.append('g')
 												.append('rect')
-												.attr('class', 'rect-market-hover')
-												.attr("x", function(d, i){return i * 40;})
+												.attr('class', 'on-click')
+												.attr('class', 'rect-cip-click')
+												.attr("x", function(d, i){return +d.values['helper'] * 40;})
 										   		.attr('fill', 'rgb(226, 71, 100)')
-										   		.attr('y', function(d){return xaxis_cip})
 										   		.attr("width", 10)
-										   		.attr('height', 0)
-										   		.transition()
-										   		.duration(1000)
 										   		.attr("y", function(d){return xaxis_cip - bar3_scale(d.values['students']);})
 										   		.attr("height", function(d){return bar3_scale(d.values['students']);})
-										   		.attr('opacity', 1)
+										   		.attr('opacity', 0.7)
 											    .style('visibility', 'visible')
+											    .on('mouseover', function(d){
+											    	d3.select(this)
+									   					.attr('opacity', 1)
 
-									   })
-									   .on('mouseout', function(d){
-									   		d3.select(this)
-									   			.attr('opacity', 0.6)
-									   		d3.selectAll('.market-hover')
-									   			.remove()
-									   		d3.selectAll('.rect-market-hover')
-									   			.remove()
+													mouse_hover(d, d.values['helper'], xaxis_cip)
+
+											    })
+											    .on('mouseout', function(d){
+											    	d3.selectAll('.market-hover').remove()
+											    	d3.selectAll('.rect-cip-click').attr('opacity', 0.7)
+											    })
+
+
+										d3.csv('market_share_linegraph.csv', function(d){
+											let first_filter=d.filter(function(d){
+												return d['to_psi']==current_selection_market
+											})
+
+											let market_share=first_filter.filter(function(d){
+												return d['town']==clicked
+											})
+
+											let xRange = d3.scale.linear()
+												.range([0, 1]).domain([0, 400])
+											
+											var valueline = d3.svg.line()
+												.x(function(d){return d['students'];})
+												.y(function(d){return +d['K12_GRAD_SCHOOL_YEAR'].substring(1);})
+
+											svg3.append('g')
+												.attr('class', 'line')
+												.attr('d', 10);
+
+										})
+
+
 									   })
 
 								 	
@@ -609,7 +798,7 @@ debugger;
 										.append('g')
 										.append('rect')
 										.attr('class', 'age-rect')
-										.attr("x", function(d, i){return i * 40;})
+										.attr("x", function(d){return (d['key'] - 17) * 40;})
 								   		.attr("y", function(d){return xaxis_demographics- bar2_scale(d.values['students']);})
 								   		.attr("width", 10)
 								   		.attr("height", function(d){return bar2_scale(d.values['students']);})
@@ -634,7 +823,7 @@ debugger;
 										.append('g')
 										.append('text')
 										.attr('class', 'age_xaxis')
-										.attr('x', function(d, i){return i * 40;})
+										.attr('x', function(d){return (+d['key']-17) * 40;})
 										.attr("y", xaxis_demographics + 16)
 										.text(function(d){return d['key'];})
 
@@ -648,7 +837,7 @@ debugger;
 										.append('g')
 										.append('rect')
 										.attr('class', 'cip-rect')
-										.attr('x', function(d, i){return i * 40;})
+										.attr('x', function(d, i){return +d.values['helper'] * 40;})
 										.attr('y', function(d){return xaxis_cip - bar3_scale(d.values['students']);})
 										.attr('width', 10)
 										.attr('height', function(d){return bar3_scale(d.values['students']);})
@@ -661,44 +850,7 @@ debugger;
 
 
 
-											svg2.append('text')
-										   			.attr('class', 'market-hover')
-										   			.text(d['key'] + ': ' + d.values['students'])
-										   			.attr('x', 55)
-										   			.attr('y', xaxis_cip + 40)
-										   			.attr('fill', 'white')
-										   			.transition()
-										   			.delay(400)
-										   			.duration(300)
-										   			.attr('fill', 'black')
-										   	svg2.append("line")
-										   			.attr('class', 'market-hover')
-										   			.style('stroke-dasharray', ('3, 3'))
-										   			.attr('x1', i * 40 + 5)
-										   			.attr('y1', xaxis_cip + 5)
-										   			.attr('x2', i * 40 + 5)
-										   			.attr('y2', xaxis_cip + 5)
-										   			.transition()
-										   			.duration(200)
-										   			.attr('x2', 50)
-										   			.attr('y2', xaxis_cip + 20)
-										   			.attr('stroke-width', 1)
-										   			.attr('stroke', 'black')
-
-										   	svg2.append('line')
-										   			.attr('class', 'market-hover')
-										   			.style('stroke-dasharray', ('3, 3'))
-										   			.attr('x1', 50)
-										   			.attr('y1', xaxis_cip + 20)
-										   			.attr('x2', 50)
-										   			.attr('y2', xaxis_cip + 20)
-										   			.transition()
-										   			.delay(200)
-										   			.duration(200)
-										   			.attr('x2', 50)
-										   			.attr('y2', xaxis_cip + 40)
-										   			.attr('stroke-width', 1)
-										   			.attr('stroke', 'black')
+											mouse_hover(d, d.values['helper'], xaxis_cip)
 										 })
 									   	.on('mouseout', function(d, i){
 									   		d3.select(this)
@@ -707,7 +859,7 @@ debugger;
 									   			.remove()
 									   	})
 
-									
+
 
 
 
@@ -745,3 +897,16 @@ debugger;
 
 
 		}
+	</script>
+</head>
+<body>
+	<script type="text/javascript">
+		d3.json("bcGeo.json", draw); 
+	</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<style>
+	.hover {
+		font-family: "Courier New";
+		font-style: italic;
+		font-size: 12px;
+	}
+	</style>
+
+	<script type="text/javascript">
+	function graph(fteData){
+
+
+		"use strict";
+		var margin=75,
+			width=1100 - margin,
+			height=1200 - margin;
+
+		d3.select('body')
+			.append('h2')
+			.text('FTE Exploration Tool');
+
+		d3.select('body')
+			.append('h3')
+			.text('In Progress')
+
+		var svg1=d3.select('body')
+			.append('svg')
+			.attr('width', width+margin)
+			.attr('height', height+margin)
+			.append('g')
+			.attr('class', 'top_graph');
+
+		var svg2=d3.select('body')
+			.append('svg')
+			.attr('width', 600)
+			.attr('height', height+margin)
+			.append('g')
+			.attr('class', 'side_graph')
+
+
+
+		var barspacing= 15
+
+		var barwidth=10
+
+		//first graph for this year only
+
+		var currentYear=fteData.filter(function(d){
+			return d['year']=='2016-17'
+		})
+
+		var textspacing=5
+
+		function mouse_hover(data, index, xaxis, text, value){
+									svg1.append('text')
+								   			.attr('class', 'hover')
+								   			.text(text + ': ' + Math.round(value*100)/100)
+								   			.attr('x', (index * barspacing) + 42.5)
+								   			.attr('y', xaxis + 23)
+								   			.attr('fill', 'white')
+								   			.transition()
+								   			.delay(400)
+								   			.duration(300)
+								   			.attr('fill', 'black')
+								   		svg1.append("line")
+								   			.attr('class', 'hover')
+								   			.style('stroke-dasharray', ('3, 3'))
+								   			.attr('x1', index * barspacing + 5)
+								   			.attr('y1', xaxis + 5)
+								   			.attr('x2', index * barspacing + 5)
+								   			.attr('y2', xaxis + 5)
+								   			.transition()
+								   			.duration(200)
+								   			.attr('x2', (index * barspacing) + 20)
+								   			.attr('y2', xaxis + 20)
+								   			.attr('stroke-width', 1)
+								   			.attr('stroke', 'black')
+
+								   		svg1.append('line')
+								   			.attr('class', 'hover')
+								   			.style('stroke-dasharray', ('3, 3'))
+								   			.attr('x1', (index * barspacing) + 20)
+								   			.attr('y1', xaxis + 20)
+								   			.attr('x2', (index * barspacing) + 20)
+								   			.attr('y2', xaxis + 20)
+								   			.transition()
+								   			.delay(200)
+								   			.duration(200)
+								   			.attr('x2', (index * barspacing) + 40)
+								   			.attr('y2', xaxis + 20)
+								   			.attr('stroke-width', 1)
+								   			.attr('stroke', 'black')
+								}
+
+		function mouse_out(){
+			d3.selectAll('.hover')
+				.transition()
+				.duration(300)
+				.attr('opacity', 0)
+				.remove()
+		}
+
+
+		
+
+		var currentNested=d3.nest()
+					.key(function(d){
+						return d['programTitle'];
+					})
+					.rollup(function(leaves){
+						var fte=d3.sum(leaves, function(d){
+							return +d['sumFTE'];
+						});
+
+
+						return {
+							'fte': fte,
+						}
+
+
+					})
+					.entries(currentYear)
+
+		var maxFTEs = d3.max(currentNested, function(d){
+			return d.values['fte'];
+		})
+
+		var xaxisGraphOne = 200
+
+		var bar1Scale = d3.scale.linear()
+							.domain([0, maxFTEs])
+							.range([0, xaxisGraphOne])
+
+		
+
+		svg1.selectAll('.currentTotal')
+			.data(currentNested.sort(function(a, b){return b.values['fte'] - a.values['fte'];}))
+			.enter()
+			.append('g')
+			.append('rect')
+			.attr('class', 'currentTotal')
+			.attr('x', function(d, i){return i * barspacing})
+			.attr('y', function(d){
+				return xaxisGraphOne - bar1Scale(d.values['fte']);
+			})
+			.attr('width', barwidth)
+			.attr('height', function(d){
+				return bar1Scale(d.values['fte']);
+			})
+			.attr('fill', 'black')
+			.attr('id', function(d){
+				return d['key'].replace(/\s/g, "");
+			})
+			.attr('opacity', 0.2)
+			.on('mouseover', function(d, i){
+
+				
+
+				d3.select(this).attr('opacity', 1)
+
+
+				mouse_hover(d, i, xaxisGraphOne, d['key'], d.values['fte']);
+
+				let hovered = d['key'].replace(/\s/g, "")
+				d3.selectAll("#" + hovered).attr('opacity', 1)
+				
+			})
+			.on('mouseout', function(d){
+				let hovered = d['key'].replace(/\s/g, "")
+
+				d3.select(this)
+					.attr('opacity', 0.2)
+
+				mouse_out();
+
+				d3.selectAll('#' + hovered).attr('opacity', 0.2)
+				
+			})
+
+	
+		function delta_graph(deltaData){
+
+			var xaxisDeltaGraph=300
+
+			var delta_maxFTEs =d3.max(deltaData, function(d){
+				return +d['delta'];
+			})
+
+			var delta_minFTEs = d3.min(deltaData, function(d){
+				return +d['delta'];
+			})
+
+
+
+
+
+			
+
+			var bar2Scale = d3.scale.linear()
+				.domain([0, delta_maxFTEs])
+				.range([0, 100])
+
+			svg1.selectAll('.currentDelta')
+				.data(deltaData.sort(function(a, b){return a['delta'] - b['delta'];}))
+				.enter()
+				.append('g')
+				.append('rect')
+				.attr('class', 'currentDelta')
+				.attr('x', function(d, i){return i * barspacing})
+				.attr('y', function(d){
+					return xaxisDeltaGraph - bar2Scale(Math.abs(d['delta']));
+				})
+				.attr('width', barwidth)
+				.attr('height', function(d){
+					return bar2Scale(Math.abs(d['delta']));
+				})
+				.attr('fill', function(d){
+					return d['delta'] > 0? 'green': 'red';
+				})
+				.attr('opacity', 0.2)
+				.attr('id', function(d){
+					return d['programID'];
+				})
+				.on('mouseover', function(d, i){
+					d3.select(this)
+						.attr('opacity', 1)
+
+					mouse_hover(d, i, xaxisDeltaGraph, d['programTitle'], d['delta']);
+
+					let hovered = d['programID'].replace(/\s/g, "")
+					d3.selectAll("#" + hovered).attr('opacity', 1)
+				})
+				.on('mouseout', function(d){
+					d3.select(this).attr('opacity', 0.2)
+
+					mouse_out();
+
+					let hovered = d['programID'].replace(/\s/g, "")
+					d3.selectAll("#" + hovered).attr('opacity', 0.2)
+				})
+				.on('click', function(d){
+
+
+					///////////////////
+					// DETAIL GRAPHS //
+					///////////////////
+
+
+
+
+					d3.selectAll('.yearGraph').remove()
+
+					let clicked=d['programTitle'];
+
+					let filteredData=fteData.filter(function(d){
+						return d['programTitle']==clicked;
+					})
+
+					
+
+					
+					var yearGraph_xaxis=200
+
+					let filteredRollup=d3.nest()
+						.key(function(d){
+							return d['year'];
+						})
+						.rollup(function(leaves){
+							var fte=d3.sum(leaves, function(d){
+								return d['sumFTE']
+							})
+
+							return {
+								'fte': fte
+							}
+						})
+						.entries(filteredData)
+
+					let yearMaxFTEs = d3.max(filteredRollup, function(d){
+						return +d.values['fte'];
+					})
+
+					var bar3scale = d3.scale.linear()
+						.domain([0, yearMaxFTEs])
+						.range([0, 200])
+
+					svg2.selectAll('.yearGraph')
+						.data(filteredRollup)
+						.enter()
+						.append('g')
+						.append('rect')
+						.attr('class', 'yearGraph')
+						.attr('x', function(d, i){return (d['key'].substring(0, 4)-2009) * barspacing;})
+						.attr('y', function(d){
+							return yearGraph_xaxis - bar3scale(d.values['fte']);
+						})
+						.attr('width', barwidth)
+						.attr('height', function(d){
+							return bar3scale(d.values['fte']);
+						})
+						.attr('opacity', 0.2)
+						.on('mouseover', function(d){
+							d3.select(this).attr('opacity', 1)
+						})
+						.on('mouseout', function(d){
+							d3.select(this).attr('opacity', 0.2)
+						})
+
+					let studentDistribution=d3.nest()
+						.key(function(d){
+							return d['']
+						})
+
+				})
+
+			
+
+		}
+		
+
+
+		d3.csv('fteDelta.csv', delta_graph)
+	}
+
+	</script>
+</head>
+
+
+<body>
+	<script type="text/javascript">
+		d3.csv("fteData.csv", graph); 
+	</script>
+
+
+
+
+
+</body>
+</html>

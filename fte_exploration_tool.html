@@ -563,7 +563,7 @@
 				})
 				.on('mouseover', function(d, i){
 					d3.select(this)
-						.attr('opacity', 1)
+						.attr('opacity', 1).transition().duration(1000).attr('y', 10000)
 
 					mouse_hover(d, i, xaxisDeltaGraph, d['programTitle'], d['delta']);
 
@@ -571,11 +571,15 @@
 					d3.selectAll("#" + hovered).attr('opacity', 1)
 				})
 				.on('mouseout', function(d){
-					d3.select(this).attr('opacity', 0.2)
+
+					d3.select(this).attr('opacity', 0.2).transition().duration(10000).attr('y', function(d){
+						return xaxisDeltaGraph - bar2Scale(Math.abs(d['delta']));
+					})
 
 					mouse_out();
 
 					let hovered = d['programID'].replace(/\s/g, "").replace("'", '')
+
 					d3.selectAll("#" + hovered).attr('opacity', 0.2)
 				})
 				.on('click', function(d){

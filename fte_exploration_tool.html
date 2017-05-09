@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="d3.v3.min.js"></script>
 	<style>
 	.hover {
 		font-family: "Courier New";
@@ -33,6 +33,35 @@
 		font-family: sans-serif;
 		font-size: 11px;
 	}
+	h2 {
+		text-align: center;
+		letter-spacing: 3px;
+		font-size: 22px;
+		font-weight: bold;
+		text-transform: uppercase;
+		font-family: sans-serif;
+	}
+	h3 {
+		text-align: center;
+		font-family: sans-serif;
+		font-style: italic;
+		font-size: 12px;
+	}
+	.sideTitleText {
+		font-size: 18px;
+		letter-spacing: 2px;
+		font-weight: bold;
+		text-transform: uppercase;
+		font-family: sans-serif;
+	}
+	.subtitleText {
+		font-family: sans-serif;
+		font-size: 10px;
+	}
+	.sideSubtitleText{
+		font-family: sans-serif;
+		font-size: 10px;
+	}
 	</style>
 
 	<script type="text/javascript">
@@ -42,7 +71,8 @@
 		"use strict";
 		var margin=75,
 			width=900 - margin,
-			height=350 - margin;
+			height=450 - margin,
+			width2=800;
 
 		d3.select('body')
 			.append('h2')
@@ -50,7 +80,7 @@
 
 		d3.select('body')
 			.append('h3')
-			.text('In Progress')
+			.text('Click on any bar to the right to display detailed statistics')
 
 		var svg1=d3.select('body')
 			.append('svg')
@@ -61,7 +91,7 @@
 
 		var svg2=d3.select('body')
 			.append('svg')
-			.attr('width', 600)
+			.attr('width', width2)
 			.attr('height', height+margin)
 			.append('g')
 			.attr('class', 'side_graph')
@@ -133,7 +163,236 @@
 				.remove()
 		}
 
+		function detail_graphs(d, click) {
 
+					///////////////////
+					// DETAIL GRAPHS //
+					///////////////////
+
+
+
+
+					d3.selectAll('.yearGraph').remove()
+					d3.selectAll('.dyn-axis').remove()
+					d3.selectAll('.studentDistribution').remove()
+					d3.selectAll('.sideTitleText').remove()
+					d3.selectAll('.sideSubtitleText').remove()
+
+					var yearGraph_xaxis=300
+
+					var yearGraph_topPadding=75
+
+					let clicked=click;
+
+					let filteredData=fteData.filter(function(d){
+						return d['programTitle']==clicked;
+					})
+
+					var titleText = svg2.append('text')
+						.text(clicked)
+						.attr('x', width2/4)
+						.attr('y', 20)
+						.attr('class', 'sideTitleText')
+
+
+
+					let filteredRollup=d3.nest()
+						.key(function(d){
+							return d['year'];
+						})
+						.rollup(function(leaves){
+							var fte=d3.sum(leaves, function(d){
+								return d['sumFTE']
+							})
+
+							return {
+								'fte': fte
+							}
+						})
+						.entries(filteredData)
+
+					let yearMaxFTEs = d3.max(filteredRollup, function(d){
+						return +d.values['fte'];
+					})
+
+					var bar3scale = d3.scale.linear()
+						.domain([0, yearMaxFTEs])
+						.range([0, yearGraph_xaxis])
+
+					var xAxis3Scale = d3.scale.linear()
+						.domain([2009, 2017])
+						.range([0, (barspacing) * (2017-2009)])
+
+					var yAxis3Scale = d3.scale.linear()
+						.domain([yearMaxFTEs, 0])
+						.range([0, yearGraph_xaxis])
+
+					var xAxis3 = d3.svg.axis().scale(xAxis3Scale).orient('bottom').tickFormat(d3.format('d'))
+
+					var xAxis3line = svg2.append('g')
+						.attr('class', 'dyn-axis')
+						.attr('transform', 'translate(' + (padding) + ',' + (yearGraph_xaxis+yearGraph_topPadding) + ')')
+						.call(xAxis3.ticks(4))
+							.selectAll('text')
+							.style('text-anchor', 'end')
+							.attr('dx', '3em')
+							.attr('transform', 'rotate(45)')
+
+					var yAxis3 = d3.svg.axis().scale(yAxis3Scale).orient('left')
+
+					var yAxis3line = svg2.append('g')
+						.attr('class', 'dyn-axis')
+						.attr('transform', 'translate(' + yAxisPadding + ',' + (yearGraph_xaxis + yearGraph_topPadding - bar3scale(yearMaxFTEs)) + ')')
+						.call(yAxis3)
+
+					var subtitle1 = svg2.append('text')
+						.text('Year-by-Year FTEs')
+						.attr('x', (barspacing * 8)/2)
+						.attr('y', yearGraph_topPadding-10)
+						.attr('class', 'sideSubtitleText')
+
+
+
+					d3.csv('studentData2.csv', fte_distribution)
+
+					function fte_distribution(distributionData){
+
+						var values = distributionData.filter(function(d){
+							return d['programTitle']==clicked;
+						})
+
+
+						let raw = d3.nest()
+									.key(function(d){return d['fte']})
+									.rollup(function(leaves){
+			
+										var count=d3.sum(leaves, function(d){
+
+											return +d['count']
+
+
+										})
+
+										return {
+											'count': count
+										}
+								
+									})
+									.entries(values)
+
+						let distribution_height = yearGraph_xaxis
+						
+						let distribution_width=300
+
+						var maxCount = d3.max(raw, function(d){return d.values['count']})
+
+						var dist_maxFTE=d3.max(raw, function(d){return +d['key'];})
+
+						let fte_spacing=300
+
+						let distribution_offset=300
+
+						var bar4scale=d3.scale.linear()
+							.domain([0, maxCount])
+							.range([0, distribution_height])
+
+						let bar4yscale=d3.scale.linear()
+							.domain([maxCount, 0])
+							.range([0, distribution_height])
+
+						let bar4yaxis=d3.svg.axis().scale(bar4yscale).orient('left')
+
+						var bar4yline = svg2.append('g')
+							.attr('class', 'dyn-axis')
+							.attr('transform', 'translate(' + (distribution_offset) + ',' + yearGraph_topPadding + ')')
+							.call(bar4yaxis)
+
+						let bar4xscale=d3.scale.linear()
+							.domain([0, dist_maxFTE])
+							.range([0, dist_maxFTE*fte_spacing])
+
+						let bar4xaxis=d3.svg.axis().scale(bar4xscale).orient('bottom')
+
+						let bar4xline=svg2.append('g')
+							.attr('class', 'dyn-axis')
+							.attr('transform', 'translate(' + (distribution_offset + padding - yAxisPadding) + ',' + (distribution_height+yearGraph_topPadding) + ')')
+							.call(bar4xaxis.ticks(4))
+
+						var subtitle2 = svg2.append('text')
+							.text('FTE/student Distribution')
+							.attr('x', distribution_offset*1.25)
+							.attr('y', yearGraph_topPadding-10)
+							.attr('class', 'sideSubtitleText')
+					
+						svg2.selectAll('.studentDistribution')
+							.data(raw.sort(function(a, b){
+								return +a['key'] - +b['key'];
+							}))
+							.enter()
+							.append('g')
+							.append('rect')
+							.attr('class', 'studentDistribution')
+							.attr('y', distribution_height)
+							.attr('height', 0)
+							.attr('x', function(d){
+								return (distribution_offset+padding-yAxisPadding) + (+d['key']*fte_spacing)
+							})
+							.attr('width', 2)
+							.attr('opacity', 0.2)
+							.on('mouseover', function(d, i){
+								d3.select(this).attr('opacity', 1)
+							})
+							.on('mouseout', function(d){
+								d3.select(this).attr('opacity', 0.2)
+
+							})
+							.transition()
+							.duration(100)
+							.delay(function(d, i){return i * 10})
+							.attr('y', function(d){
+								return distribution_height + yearGraph_topPadding - bar4scale(d.values['count'])
+							})
+							.attr('height', function(d){
+								return bar4scale(d.values['count']);
+							})
+							
+
+
+					svg2.selectAll('.yearGraph')
+						.data(filteredRollup)
+						.enter()
+						.append('g')
+						.append('rect')
+						.attr('class', 'yearGraph')
+						.attr('y', yearGraph_xaxis + yearGraph_topPadding)
+						.attr('height', 0)
+						.attr('x', function(d, i){return (d['key'].substring(0, 4)-2009) * barspacing + padding;})
+						.attr('width', barwidth)
+						.attr('opacity', 0.2)
+						.on('mouseover', function(d){
+							d3.select(this).attr('opacity', 1)
+						})
+						.on('mouseout', function(d){
+							d3.select(this).attr('opacity', 0.2)
+						})
+						.transition()
+						.duration(300)
+						.delay(function(d, i){return i * 50;})
+						.attr('height', function(d){
+							return bar3scale(d.values['fte']);
+						})
+						.attr('y', function(d){
+							return yearGraph_xaxis + yearGraph_topPadding - bar3scale(d.values['fte']);
+						})
+						
+					
+
+					}
+
+					////////////////////////// 
+					//// END DETAIL GRAPHS ///
+					//////////////////////////
+		}
 		
 
 		var currentNested=d3.nest()
@@ -171,7 +430,11 @@
 
 		var yAxis1 = d3.svg.axis().scale(AxisScale).orient('left')
 
-		
+		svg1.append('text')
+			.text('Total FTE values')
+			.attr('x', width/3)
+			.attr('y', 20)
+			.attr('class', 'subtitleText')
 
 		svg1.selectAll('.currentTotal')
 			.data(currentNested.sort(function(a, b){return b.values['fte'] - a.values['fte'];}))
@@ -212,6 +475,9 @@
 				d3.selectAll('#' + hovered).attr('opacity', 0.2)
 				
 			})
+			.on('click', function(d){
+				detail_graphs(d, d['key']);
+			})
 			.transition()
 			.duration(300)
 			.delay(function(d, i){return i * 25})
@@ -235,7 +501,9 @@
 	
 		function delta_graph(deltaData){
 
-			var xaxisDeltaGraph=320
+			var xaxisDeltaGraph=375
+
+			var deltaHeight=150
 
 			var delta_maxFTEs =d3.max(deltaData, function(d){
 				return +d['delta'];
@@ -248,14 +516,16 @@
 
 
 
-
+			
 			
 
 			var bar2Scale = d3.scale.linear()
 				.domain([0, delta_maxFTEs])
-				.range([0, 90])
+				.range([0, deltaHeight])
 
-			var axis2Scale = d3.scale.linear().domain([delta_maxFTEs, 0]).range([0, 90])
+			var axis2Scale = d3.scale.linear()
+				.domain([delta_maxFTEs, 0])
+				.range([0, deltaHeight])
 
 			var yAxis2 = d3.svg.axis().scale(axis2Scale).orient('left')
 
@@ -263,6 +533,12 @@
 				.attr('class', 'axis')
 				.attr('transform', 'translate(' + yAxisPadding + ',' + (xaxisDeltaGraph - bar2Scale(delta_maxFTEs)) +')')
 				.call(yAxis2)
+
+			svg1.append('text')
+				.text('Yearly FTE differences')
+				.attr('x', width/3)
+				.attr('y', xaxisDeltaGraph-bar2Scale(delta_maxFTEs)+20)
+				.attr('class', 'subtitleText')
 
 			svg1.selectAll('.currentDelta')
 				.data(deltaData.sort(function(a, b){return a['delta'] - b['delta'];}))
@@ -302,175 +578,8 @@
 				})
 				.on('click', function(d){
 
-
-					///////////////////
-					// DETAIL GRAPHS //
-					///////////////////
-
-
-
-
-					d3.selectAll('.yearGraph').remove()
-					d3.selectAll('.dyn-axis').remove()
-					d3.selectAll('.studentDistribution').remove()
-
-					var yearGraph_xaxis=200
-
-					let clicked=d['programTitle'];
-
-					let filteredData=fteData.filter(function(d){
-						return d['programTitle']==clicked;
-					})
-
+					detail_graphs(d, d['programTitle']);
 					
-
-					
-					
-
-					let filteredRollup=d3.nest()
-						.key(function(d){
-							return d['year'];
-						})
-						.rollup(function(leaves){
-							var fte=d3.sum(leaves, function(d){
-								return d['sumFTE']
-							})
-
-							return {
-								'fte': fte
-							}
-						})
-						.entries(filteredData)
-
-					let yearMaxFTEs = d3.max(filteredRollup, function(d){
-						return +d.values['fte'];
-					})
-
-					var bar3scale = d3.scale.linear()
-						.domain([0, yearMaxFTEs])
-						.range([0, 200])
-
-					var xAxis3Scale = d3.scale.linear()
-						.domain([2009, 2017])
-						.range([0, (barspacing) * (2017-2009)])
-
-					var yAxis3Scale = d3.scale.linear()
-						.domain([yearMaxFTEs, 0])
-						.range([0, yearGraph_xaxis])
-
-					var xAxis3 = d3.svg.axis().scale(xAxis3Scale).orient('bottom').tickFormat(d3.format('d'))
-
-					var xAxis3line = svg2.append('g')
-						.attr('class', 'dyn-axis')
-						.attr('transform', 'translate(' + (padding) + ',' + yearGraph_xaxis + ')')
-						.call(xAxis3.ticks(4))
-							.selectAll('text')
-							.style('text-anchor', 'end')
-							.attr('dx', '3em')
-							.attr('transform', 'rotate(45)')
-
-					var yAxis3 = d3.svg.axis().scale(yAxis3Scale).orient('left')
-
-					var yAxis3line = svg2.append('g')
-						.attr('class', 'dyn-axis')
-						.attr('transform', 'translate(' + yAxisPadding + ',' + (yearGraph_xaxis - bar3scale(yearMaxFTEs)) + ')')
-						.call(yAxis3)
-
-					
-
-					svg2.selectAll('.yearGraph')
-						.data(filteredRollup)
-						.enter()
-						.append('g')
-						.append('rect')
-						.attr('class', 'yearGraph')
-						.attr('y', function(d){
-							return yearGraph_xaxis
-						})
-						.attr('height', 0)
-						
-
-						.attr('x', function(d, i){return (d['key'].substring(0, 4)-2009) * barspacing + padding;})
-						
-						.attr('width', barwidth)
-						.attr('opacity', 0.2)
-						.on('mouseover', function(d){
-							d3.select(this).attr('opacity', 1)
-						})
-						.on('mouseout', function(d){
-							d3.select(this).attr('opacity', 0.2)
-						})
-						.transition()
-						.duration(300)
-						.delay(function(d, i){return i * 50;})
-						.attr('height', function(d){
-							return bar3scale(d.values['fte']);
-						})
-						.attr('y', function(d){
-							return yearGraph_xaxis - bar3scale(d.values['fte']);
-						})
-						
-						
-
-					d3.csv('studentData2.csv', fte_distribution)
-
-					function fte_distribution(distributionData){
-
-						var values = distributionData.filter(function(d){
-							return d['programTitle']==clicked;
-						})
-
-
-						let raw = d3.nest()
-									.key(function(d){return d['fte']})
-									.rollup(function(leaves){
-			
-										var count=d3.sum(leaves, function(d){
-
-											return +d['count']
-
-
-										})
-
-										return {
-											'count': count
-										}
-								
-									})
-									.entries(values)
-
-						let distribution_height = yearGraph_xaxis
-						
-						let distribution_width=300
-
-						var maxCount = d3.max(raw, function(d){return d.values['count']})
-
-						let distribution_offset=300
-
-						var bar4scale=d3.scale.linear()
-							.domain([0, maxCount])
-							.range([0, distribution_width])
-
-					
-						svg2.selectAll('.studentDistribution')
-							.data(raw)
-							.enter()
-							.append('g')
-							.append('rect')
-							.attr('class', 'studentDistribution')
-							.attr('y', function(d){
-								return distribution_height - bar4scale(d.values['count'])
-							})
-							.attr('x', function(d){
-								return distribution_offset + (+d['key']*50)
-							})
-							.attr('height', function(d){
-								return bar4scale(d.values['count']);
-							})
-							.attr('width', 5)
-
-
-					}
 
 				})
 				.transition()
@@ -482,7 +591,6 @@
 				.attr('y', function(d){
 					return xaxisDeltaGraph - bar2Scale(Math.abs(d['delta']));
 				})
-
 
 
 			

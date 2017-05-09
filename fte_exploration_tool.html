@@ -468,7 +468,9 @@
 				let hovered = d['key'].replace(/\s/g, "").replace("'", '')
 
 				d3.select(this)
-					.attr('opacity', 0.2).transition().duration(10000).attr('y', xaxisGraphOne)
+					.attr('opacity', 0.2).transition().duration(10000).attr('y', function(d){
+						return xaxisGraphOne - bar1Scale(d.values['fte']);
+					})
 
 				mouse_out();
 

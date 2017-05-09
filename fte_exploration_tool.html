@@ -332,7 +332,7 @@
 							.append('g')
 							.append('rect')
 							.attr('class', 'studentDistribution')
-							.attr('y', distribution_height)
+							.attr('y', distribution_height+yearGraph_topPadding)
 							.attr('height', 0)
 							.attr('x', function(d){
 								return (distribution_offset+padding-yAxisPadding) + (+d['key']*fte_spacing)
@@ -448,27 +448,27 @@
 			.attr('width', barwidth)
 			.attr('fill', 'black')
 			.attr('id', function(d){
-				return d['key'].replace(/\s/g, "");
+				return d['key'].replace(/\s/g, "").replace("'", '');
 			})
 			.attr('opacity', 0.2)
 			.on('mouseover', function(d, i){
 
 				
 
-				d3.select(this).attr('opacity', 1)
+				d3.select(this).attr('opacity', 1).transition().duration(1000).attr('y', 10000)
 
 
 				mouse_hover(d, i, xaxisGraphOne, d['key'], d.values['fte']);
 
-				let hovered = d['key'].replace(/\s/g, "")
+				let hovered = d['key'].replace(/\s/g, "").replace("'", '')
 				d3.selectAll("#" + hovered).attr('opacity', 1)
 				
 			})
 			.on('mouseout', function(d){
-				let hovered = d['key'].replace(/\s/g, "")
+				let hovered = d['key'].replace(/\s/g, "").replace("'", '')
 
 				d3.select(this)
-					.attr('opacity', 0.2)
+					.attr('opacity', 0.2).transition().duration(10000).attr('y', xaxisGraphOne)
 
 				mouse_out();
 
@@ -565,7 +565,7 @@
 
 					mouse_hover(d, i, xaxisDeltaGraph, d['programTitle'], d['delta']);
 
-					let hovered = d['programID'].replace(/\s/g, "")
+					let hovered = d['programID'].replace(/\s/g, "").replace("'", '')
 					d3.selectAll("#" + hovered).attr('opacity', 1)
 				})
 				.on('mouseout', function(d){
@@ -573,7 +573,7 @@
 
 					mouse_out();
 
-					let hovered = d['programID'].replace(/\s/g, "")
+					let hovered = d['programID'].replace(/\s/g, "").replace("'", '')
 					d3.selectAll("#" + hovered).attr('opacity', 0.2)
 				})
 				.on('click', function(d){

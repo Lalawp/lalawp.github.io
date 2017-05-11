@@ -110,7 +110,7 @@
 
 		"use strict";
 		var margin=75,
-			width=900 - margin,
+			width=875 - margin,
 			height=450 - margin,
 			width2=800;
 
@@ -163,6 +163,10 @@
 		var fte_spacing=300
 
 		var distribution_offset=300
+
+		var xaxisDeltaGraph=375
+
+		var deltaHeight=150
 
 		function mouse_hover(data, index, xaxis, text, value){
 									svg1.append('text')
@@ -281,7 +285,7 @@
 				.style('stroke-dasharray', ('3, 3'))
 				.attr('x1', distribution_offset+padding-yAxisPadding + (fte_mid))
 				.attr('y1', distribution_height+yearGraph_topPadding)
-				.attr('y2', distribution_height+yearGraph_topPadding - bar4scale(maxCount))
+				.attr('y2', distribution_height+yearGraph_topPadding - distribution_height)
 				.attr('x2', distribution_offset+padding-yAxisPadding + (fte_mid))
 				.attr('stroke-width', 1)
 				.attr('stroke', 'black')
@@ -711,18 +715,10 @@
 						return d3.ascending(a['key'], b['key']);
 					})
 					.on('mouseover', function(d, i){
-
-				
-
 						d3.select(this).attr('opacity', 1)
-						
-
-
 						mouse_hover(d, i, xaxisGraphOne, d['key'], d.values['fte']);
-
 						let hovered = d['key'].replace(/\s/g, "").replace("'", '')
 						d3.selectAll("#" + hovered).attr('opacity', 1)
-						
 					})
 					.transition()
 					.duration(1000)
@@ -738,8 +734,6 @@
 			.attr('class', 'sortBy')
 			.on('mouseover', function(d){
 				d3.select(this).attr('font-weight', 'bold')
-
-
 			})
 			.on('mouseout', function(d){
 
@@ -761,18 +755,10 @@
 						return b.values['fte'] - a.values['fte'];
 					})
 					.on('mouseover', function(d, i){
-
-				
-
 						d3.select(this).attr('opacity', 1)
-						
-
-
 						mouse_hover(d, i, xaxisGraphOne, d['key'], d.values['fte']);
-
 						let hovered = d['key'].replace(/\s/g, "").replace("'", '')
 						d3.selectAll("#" + hovered).attr('opacity', 1)
-						
 					})
 					.transition()
 					.duration(1000)
@@ -795,29 +781,17 @@
 			})
 			.attr('opacity', 0.2)
 			.on('mouseover', function(d, i){
-
-				
-
 				d3.select(this).attr('opacity', 1)
-				
-
-
 				mouse_hover(d, i, xaxisGraphOne, d['key'], d.values['fte']);
-
 				let hovered = d['key'].replace(/\s/g, "").replace("'", '')
 				d3.selectAll("#" + hovered).attr('opacity', 1)
-				
 			})
 			.on('mouseout', function(d){
 				let hovered = d['key'].replace(/\s/g, "").replace("'", '')
-
 				d3.select(this)
 					.attr('opacity', 0.2)
-
 				mouse_out();
-
 				d3.selectAll('#' + hovered).attr('opacity', 0.2)
-				
 			})
 			.on('click', function(d){
 				let hovered = d['key'].replace(/\s/g, "").replace("'", '')
@@ -855,9 +829,7 @@
 	
 		function delta_graph(deltaData){
 
-			var xaxisDeltaGraph=375
-
-			var deltaHeight=150
+			
 
 			var delta_maxFTEs =d3.max(deltaData, function(d){
 				return +d['delta'];
@@ -866,12 +838,6 @@
 			var delta_minFTEs = d3.min(deltaData, function(d){
 				return +d['delta'];
 			})
-
-
-
-
-			
-			
 
 			var bar2Scale = d3.scale.linear()
 				.domain([0, delta_maxFTEs])
@@ -925,11 +891,8 @@
 				.on('mouseout', function(d, i){
 
 					d3.select(this).attr('opacity', 0.2)
-
 					mouse_out();
-
 					let hovered = d['programID'].replace(/\s/g, "").replace("'", '')
-
 					d3.selectAll("#" + hovered).attr('opacity', 0.2)
 				})
 				.on('click', function(d){
@@ -939,13 +902,11 @@
 						return d['delta'] > 0? 'green': 'red';
 					})
 					d3.select(this).attr('fill', 'blue')
-
 					d3.selectAll('.currentTotal').attr('fill', 'black')
 					d3.selectAll('#' + hovered).attr('fill', 'blue')
 
-					detail_graphs(d, d['programTitle']);
-					
 
+					detail_graphs(d, d['programTitle']);
 				})
 				.transition()
 				.duration(200)

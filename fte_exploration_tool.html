@@ -79,6 +79,11 @@
 		font-style: italic;
 		font-family: sans-serif;
 	}
+	.viewAll {
+		font-size: 10px;
+		font-style: italic;
+		font-family: sans-serif;
+	}
 	.dyn-sortBy {
 		font-size: 10px;
 		font-style: italic;
@@ -706,16 +711,10 @@
 			})
 
 		svg1.append('text')
-			.text('|')
-			.attr('x', width/3 + sortTextOffset + sortTextSpacing*1.5)
+			.text('View All Years Details')
+			.attr('x',  width-100)
 			.attr('y', 20)
-			.attr('class', 'sortBy')
-
-		svg1.append('text')
-			.text('View All Details')
-			.attr('x',  width/3 + sortTextOffset + sortTextSpacing*1.5 + 5)
-			.attr('y', 20)
-			.attr('class', 'sortBy viewAll')
+			.attr('class', 'viewAll')
 			.on('click', function(){
 				filterBoolean=false;
 				d3.select(this).attr('font-weight', 'bold')

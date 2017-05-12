@@ -136,7 +136,7 @@
 			.append('g')
 			.attr('class', 'side_graph')
 
-
+		var filterBoolean=true;
 
 		var barspacing= 11
 
@@ -162,7 +162,7 @@
 
 		var fte_spacing=300
 
-		var distribution_offset=300
+		var distribution_offset=200
 
 		var xaxisDeltaGraph=375
 
@@ -223,8 +223,6 @@
 			d3.selectAll('.studentDistribution').remove()
 			d3.selectAll('.barText').remove()
 			d3.selectAll('.distLine').remove()
-
-
 
 			var distribution_height = yearGraph_xaxis
 
@@ -348,11 +346,6 @@
 								
 								return d3.format(',%')(percent) 
 							})
-
-
-
-
-
 		}
 
 		function detail_graphs(d, click) {
@@ -361,17 +354,12 @@
 					// DETAIL GRAPHS //
 					///////////////////
 
-
 					d3.selectAll('.sideDynamic').remove()
-
-			
-
-					
 
 					let clicked=click;
 
 					let filteredData=fteData.filter(function(d){
-						return d['programTitle']==clicked;
+						return filterBoolean? d['programTitle']==clicked: true;
 					})
 
 					var titleText = svg2.append('text')
@@ -379,8 +367,6 @@
 						.attr('x', width2/4)
 						.attr('y', 20)
 						.attr('class', 'sideTitleText sideDynamic')
-
-
 
 					let filteredRollup=d3.nest()
 						.key(function(d){
@@ -424,8 +410,6 @@
 							.attr('dx', '2em')
 							.attr('transform', 'translate(' + barwidth + ', 0)rotate(45)')
 
-
-
 					var yAxis3 = d3.svg.axis().scale(yAxis3Scale).orient('left')
 
 					var yAxis3line = svg2.append('g')
@@ -451,7 +435,7 @@
 						.attr('width', barwidth)
 						.attr('opacity', 0.2)
 						.on('mouseover', function(d){
-							d3.select(this).attr('opacity', 1)
+							d3.select(this).attr('opacity', 0.4)
 						})
 						.on('mouseout', function(d){
 							d3.select(this).attr('opacity', 0.2)
@@ -471,36 +455,29 @@
 					function fte_distribution(distributionData){
 
 						var values = distributionData.filter(function(d){
-							return d['programTitle']==clicked;
+							return filterBoolean? d['programTitle']==clicked: true;
 						})
-
 
 						var raw = d3.nest()
 									.key(function(d){return d['fte']})
 									.rollup(function(leaves){
 			
 										var count=d3.sum(leaves, function(d){
-
 											return +d['count']
-
-
 										})
-
 										return {
 											'count': count
 										}
-								
 									})
 									.entries(values)
 
-						
-					
-						//missing//
 						distributionGraph(raw);
+
+						let distFilterSpacing=200
 
 						svg2.append('text')
 							.attr('class', 'dyn-sortBy sideDynamic')
-							.attr('x', distribution_offset*1.75)
+							.attr('x', distribution_offset+distFilterSpacing)
 							.attr('y', yearGraph_topPadding-10)
 							.attr('font-weight', 'bold')
 							.text('Historical')
@@ -515,47 +492,34 @@
 							.on('click', function(d, i){
 								contemporaryClicked=false;
 
-							
-
-								//sidegraph
 								let rawFilter = d3.nest()
 										.key(function(d){return d['fte']})
 										.rollup(function(leaves){
-				
 											var count=d3.sum(leaves, function(d){
-
 												return +d['count']
-
-
 											})
 
 											return {
 												'count': count
 											}
-									
 										})
 										.entries(values)
 
-								
 								distributionGraph(rawFilter);
 
-								
 								d3.selectAll('.dyn-sortBy').attr('font-weight', 'normal')
 								d3.select(this).attr('font-weight', 'bold')
-
-							
 						})
 
 					svg2.append('text')
 						.attr('class', 'dyn-sortBy sideDynamic')
-						.attr('x', distribution_offset*1.75+60)
+						.attr('x', distribution_offset+distFilterSpacing+60)
 						.attr('y', yearGraph_topPadding-10)
 						.text('|')
 					
-
 					svg2.append('text')
 						.attr('class', 'dyn-sortBy sideDynamic')
-						.attr('x', distribution_offset*1.75+sortTextSpacing)
+						.attr('x', distribution_offset+distFilterSpacing+sortTextSpacing)
 						.attr('y', yearGraph_topPadding-10)
 						.on('mouseover', function(d){
 							d3.select(this).attr('font-weight', 'bold')
@@ -603,27 +567,11 @@
 							
 						})
 
-					svg2.append('text')
-						.attr('class', 'dyn-sortBy sideDynamic')
-						.attr('x', distribution_offset*1.75+60)
-						.attr('y', yearGraph_topPadding-10)
-						.text('|')
-						
 					}
-
-					
-
 
 					//filtering fte/student distribution
 
 					var contemporaryClicked=false;
-
-				
-						
-					
-
-					
-
 					////////////////////////// 
 					//// END DETAIL GRAPHS ///
 					//////////////////////////
@@ -638,13 +586,9 @@
 						var fte=d3.sum(leaves, function(d){
 							return +d['sumFTE'];
 						});
-
-
 						return {
 							'fte': fte,
 						}
-
-
 					})
 					.entries(currentYear)
 
@@ -669,14 +613,13 @@
 
 		var datasetSort = currentNested.sort(function(a, b){return b.values['fte'] - a.values['fte'];})
 			
-
-		
-
 		svg1.append('text')
 			.text('Total FTE values')
 			.attr('x', width/3)
 			.attr('y', 20)
 			.attr('class', 'subtitleText')
+
+		
 
 		var sortTextOffset = 150
 		var sortTextSpacing = 75
@@ -740,16 +683,13 @@
 				d3.select(this).attr('font-weight', function(){
 					return alphaClicked? 'normal': 'bold';
 				})
-				
 			})
 			.on('click', function(){
 				alphaClicked=false;
 
 				d3.selectAll('.sortBy').attr('font-weight', 'normal')
-
 				d3.select(this).attr('font-weight', 'bold')
 
-				
 				svg1.selectAll('.currentTotal')
 					.sort(function(a, b){
 						return b.values['fte'] - a.values['fte'];
@@ -763,6 +703,32 @@
 					.transition()
 					.duration(1000)
 					.attr('x', function(d, i){return i * barspacing + padding})
+			})
+
+		svg1.append('text')
+			.text('|')
+			.attr('x', width/3 + sortTextOffset + sortTextSpacing*1.5)
+			.attr('y', 20)
+			.attr('class', 'sortBy')
+
+		svg1.append('text')
+			.text('View All Details')
+			.attr('x',  width/3 + sortTextOffset + sortTextSpacing*1.5 + 5)
+			.attr('y', 20)
+			.attr('class', 'sortBy viewAll')
+			.on('click', function(){
+				filterBoolean=false;
+				d3.select(this).attr('font-weight', 'bold')
+				detail_graphs(0, 'All Years')
+			})
+			.on('mouseover', function(d){
+				d3.select(this).attr('font-weight', 'bold')
+			})
+			.on('mouseout', function(d){
+				d3.select(this).attr('font-weight', function(){
+					return filterBoolean? 'normal': 'bold'
+				})
+				
 			})
 
 		svg1.selectAll('.currentTotal')
@@ -794,11 +760,11 @@
 				d3.selectAll('#' + hovered).attr('opacity', 0.2)
 			})
 			.on('click', function(d){
+				filterBoolean=true;
+				d3.selectAll('.viewAll').attr('font-weight', 'normal')
 				let hovered = d['key'].replace(/\s/g, "").replace("'", '')
-
 				d3.selectAll('.currentTotal').attr('fill', 'black')
 				d3.select(this).attr('fill', 'blue')
-
 				d3.selectAll('.currentDelta').attr('fill', function(d){
 					return d['delta'] > 0? 'green': 'red';
 				})
@@ -815,22 +781,13 @@
 			.attr('height', function(d){
 				return bar1Scale(d.values['fte']);
 			})
-			
-
-		
-
-		
 
 		var yAxisGroup = svg1.append('g')
 			.attr('class', 'axis')
 			.attr('transform', 'translate(' + yAxisPadding + ',0)')
 			.call(yAxis1)
 
-	
 		function delta_graph(deltaData){
-
-			
-
 			var delta_maxFTEs =d3.max(deltaData, function(d){
 				return +d['delta'];
 			})
@@ -896,6 +853,8 @@
 					d3.selectAll("#" + hovered).attr('opacity', 0.2)
 				})
 				.on('click', function(d){
+					filterBoolean=true;
+					d3.selectAll('.viewAll').attr('font-weight', 'normal')
 					let hovered = d['programID'].replace(/\s/g, "").replace("'", '')
 
 					d3.selectAll('.currentDelta').attr('fill', function(d){
@@ -917,14 +876,7 @@
 				.attr('y', function(d){
 					return xaxisDeltaGraph - bar2Scale(Math.abs(d['delta']));
 				})
-
-
-			
-
 		}
-		
-
-
 		d3.csv('fteDelta.csv', delta_graph)
 	}
 
@@ -936,10 +888,5 @@
 	<script type="text/javascript">
 		d3.csv("fteData.csv", graph); 
 	</script>
-
-
-
-
-
 </body>
 </html>

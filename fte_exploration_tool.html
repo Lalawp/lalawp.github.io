@@ -109,8 +109,9 @@
 		font-family: sans-serif;
 		font-style: italic;
 	}
-	.navBarYear {
-		font-style: italic;
+	.navSVG {
+		border-bottom: 1px solid black;
+		border-top: 1px solid black;
 	}
 
 	</style>
@@ -124,7 +125,7 @@
 			width=750 - margin,
 			height=450 - margin,
 			width2=800,
-			navHeight=85;
+			navHeight=90;
 
 		d3.select('body')
 			.append('h2')
@@ -138,6 +139,7 @@
 			.append('svg')
 			.attr('width', width+margin+width2)
 			.attr('height', navHeight)
+			.attr('class', 'navSVG')
 			.append('g')
 			.attr('class', 'topNav')
 
@@ -1107,12 +1109,12 @@ var initialX=75
 var navY = 20
 var navX= 200
 var navXInitialOffset = 150
+var programY=navY*2
 
 topNavigationSVG.append('text')
-	
 .text('View all programs')
 	.attr('x', initialX)
-	.attr('y', navY)
+	.attr('y', programY)
 	.attr('class', 'navBar navBarProg')
 	.attr('font-weight', 'bold')
 	.on('click', function(){
@@ -1136,7 +1138,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Adult Basic Education')
 	.attr('x', navX)
-	.attr('y', navY)
+	.attr('y', programY)
 	.attr('class', 'navBar navBarProg')
 	.on('click', function(){
 		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
@@ -1157,7 +1159,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Academic')
 	.attr('x', navX+navXInitialOffset*1)
-	.attr('y', navY)
+	.attr('y', programY)
 	.attr('class', 'navBar navBarProg')
 	.on('click', function(){
 		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
@@ -1178,7 +1180,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Trades')
 	.attr('x', navX+navXInitialOffset*2)
-	.attr('y', navY)
+	.attr('y', programY)
 	.attr('class', 'navBar navBarProg')
 	.on('click', function(){
 		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
@@ -1199,7 +1201,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Health')
 	.attr('x', navX+navXInitialOffset*3)
-	.attr('y', navY)
+	.attr('y', programY)
 	.attr('class', 'navBar navBarProg')
 	.on('click', function(){
 		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
@@ -1220,7 +1222,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Arts')
 	.attr('x', navX+navXInitialOffset*4)
-	.attr('y', navY)
+	.attr('y', programY)
 	.attr('class', 'navBar navBarProg')
 	.on('click', function(){
 		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
@@ -1241,7 +1243,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Continuing Education')
 	.attr('x', navX+navXInitialOffset*5)
-	.attr('y', navY)
+	.attr('y', programY)
 	.attr('class', 'navBar navBarProg')
 	.on('click', function(){
 		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
@@ -1261,10 +1263,12 @@ topNavigationSVG.append('text')
 
 //Location Filters
 
+var locationY=navY*3
+
 topNavigationSVG.append('text')
 	.text('View all locations')
 	.attr('x', initialX)
-	.attr('y', navY*2)
+	.attr('y', locationY)
 	.attr('font-weight', 'bold')
 	.attr('class', 'navBar navBarLoc')
 	.on('click', function(){
@@ -1287,7 +1291,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Terrace')
 	.attr('x', navX)
-	.attr('y', navY*2)
+	.attr('y', locationY)
 	.attr('class', 'navBar navBarLoc')
 	.on('click', function(){
 		d3.selectAll('.navBarLoc').attr('font-weight', 'normal')
@@ -1309,7 +1313,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Prince Rupert')
 	.attr('x', navX+navXInitialOffset)
-	.attr('y', navY*2)
+	.attr('y', locationY)
 	.attr('class', 'navBar navBarLoc')
 	.on('click', function(){
 		d3.selectAll('.navBarLoc').attr('font-weight', 'normal')
@@ -1331,7 +1335,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Hazelton')
 	.attr('x', navX+navXInitialOffset*2)
-	.attr('y', navY*2)
+	.attr('y', locationY)
 	.attr('class', 'navBar navBarLoc')
 	.on('click', function(){
 
@@ -1355,7 +1359,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Houston')
 	.attr('x', navX+navXInitialOffset*3)
-	.attr('y', navY*2)
+	.attr('y', locationY)
 	.attr('class', 'navBar navBarLoc')
 	.on('click', function(){
 
@@ -1379,7 +1383,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Smithers')
 	.attr('x', navX+navXInitialOffset*4)
-	.attr('y', navY*2)
+	.attr('y', locationY)
 	.attr('class', 'navBar navBarLoc')
 	.on('click', function(){
 
@@ -1403,7 +1407,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Regional')
 	.attr('x', navX+navXInitialOffset*5)
-	.attr('y', navY*2)
+	.attr('y', locationY)
 	.attr('class', 'navBar navBarLoc')
 	.on('click', function(){
 
@@ -1425,7 +1429,7 @@ topNavigationSVG.append('text')
 	})
 
 topNavigationSVG.append('text')
-	.text('View All Years Details')
+	.text('View All Programs Details')
 	.attr('x',  (width+margin) + width2*0.65)
 	.attr('y', navY*2.5)
 	.attr('class', 'viewAll')
@@ -1443,10 +1447,12 @@ topNavigationSVG.append('text')
 		})
 	})
 
+var studentY=navY*4
+
 topNavigationSVG.append('text')
 	.text('View all students')
 	.attr('x',  initialX)
-	.attr('y', navY*3)
+	.attr('y', studentY)
 	.attr('font-weight', 'bold')
 	.attr('class', 'navBar navBarStudent')
 	.on('click', function(){
@@ -1470,7 +1476,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('Aboriginal Students')
 	.attr('x',  navX)
-	.attr('y', navY*3)
+	.attr('y', studentY)
 	.attr('class', 'navBar navBarStudent')
 	.on('click', function(){
 
@@ -1493,7 +1499,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('International Students')
 	.attr('x',  navX+ navXInitialOffset)
-	.attr('y', navY*3)
+	.attr('y', studentY)
 	.attr('class', 'navBar navBarStudent')
 	.on('click', function(){
 
@@ -1513,12 +1519,13 @@ topNavigationSVG.append('text')
 		d3.select(this).attr('font-weight', studentClick=='ie'? 'bold': 'normal')
 	})
 
-var yearCenter=20
+var yearCenter=0
+var yearY=navY
 
 topNavigationSVG.append('text')
 	.text('2016-17')
 	.attr('x',  initialX+yearCenter)
-	.attr('y', navY*4)
+	.attr('y', yearY)
 	.attr('class', 'navBar navBarYear')
 	.attr('font-weight', 'bold')
 	.attr('id', 'y201617')
@@ -1542,7 +1549,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('2015-16')
 	.attr('x',  navX+yearCenter)
-	.attr('y', navY*4)
+	.attr('y', yearY)
 	.attr('id', 'y201516')
 	.attr('class', 'navBar navBarYear')
 	.on('click', function(){
@@ -1565,7 +1572,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('2014-15')
 	.attr('x',  navX+yearCenter+navXInitialOffset)
-	.attr('y', navY*4)
+	.attr('y', yearY)
 	.attr('id', 'y201415')
 	.attr('class', 'navBar navBarYear')
 	.on('click', function(){
@@ -1585,10 +1592,12 @@ topNavigationSVG.append('text')
 		d3.select(this).attr('font-weight', yearClick=='2014-15'? 'bold': 'normal')
 	})
 
+
+
 topNavigationSVG.append('text')
 	.text('2013-14')
 	.attr('x',  navX+yearCenter+navXInitialOffset*2)
-	.attr('y', navY*4)
+	.attr('y', yearY)
 	.attr('id', 'y201314')
 	.attr('class', 'navBar navBarYear')
 	.on('click', function(){
@@ -1611,7 +1620,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('2012-13')
 	.attr('x',  navX+yearCenter+navXInitialOffset*3)
-	.attr('y', navY*4)
+	.attr('y', yearY)
 	.attr('id', 'y201213')
 	.attr('class', 'navBar navBarYear')
 	.on('click', function(){
@@ -1634,7 +1643,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('2011-12')
 	.attr('x',  navX+yearCenter+navXInitialOffset*4)
-	.attr('y', navY*4)
+	.attr('y', yearY)
 	.attr('id', 'y201112')
 	.attr('class', 'navBar navBarYear')
 	.on('click', function(){
@@ -1657,7 +1666,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('2010-11')
 	.attr('x',  navX+yearCenter+navXInitialOffset*5)
-	.attr('y', navY*4)
+	.attr('y', yearY)
 	.attr('id', 'y201011')
 	.attr('class', 'navBar navBarYear')
 	.on('click', function(){
@@ -1680,7 +1689,7 @@ topNavigationSVG.append('text')
 topNavigationSVG.append('text')
 	.text('2009-10')
 	.attr('x',  navX+yearCenter+navXInitialOffset*6)
-	.attr('y', navY*4)
+	.attr('y', yearY)
 	.attr('id', 'y200910')
 	.attr('class', 'navBar navBarYear')
 	.on('click', function(){

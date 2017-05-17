@@ -25,6 +25,7 @@
 	.navBar {
 		font-family: sans-serif;
 		font-size: 12px;
+		cursor: pointer;
 	}
 
 	.dyn-axis path,
@@ -84,34 +85,33 @@
 		font-size: 10px;
 		font-style: italic;
 		font-family: sans-serif;
+		cursor: pointer;
 	}
 	.viewAll {
 		font-size: 14px;
 		font-style: italic;
 		font-family: sans-serif;
+		cursor: pointer;
 	}
 	.dyn-sortBy {
 		font-size: 10px;
 		font-style: italic;
 		font-family: sans-serif;
+		cursor: pointer;
 	}
 	.barText {
 		font-size: 10px;
 		font-family: sans-serif;
 		fill: black;
-		-webkit-text-stroke-width: thick;
-		-webkit-text-stroke-color: black;
 	}
 	.fteText {
 		font-size:9px;
 		font-family: sans-serif;
 		font-style: italic;
 	}
-
-	.yearAxis line {
-		visibility: hidden;
+	.navBarYear {
+		font-style: italic;
 	}
-
 
 	</style>
 
@@ -121,10 +121,10 @@
 
 		"use strict";
 		var margin=75,
-			width=875 - margin,
+			width=750 - margin,
 			height=450 - margin,
 			width2=800,
-			navHeight=65;
+			navHeight=85;
 
 		d3.select('body')
 			.append('h2')
@@ -157,9 +157,9 @@
 
 		var filterAllBoolean=true;
 
-		var barspacing= 11
+		var barspacing= 9
 
-		var barwidth=10
+		var barwidth=8
 
 		var padding = 40;
 
@@ -179,13 +179,13 @@
 
 		var fte_spacing=300
 
-		var distribution_offset=200
+		var distribution_offset=250
 
 		var xaxisDeltaGraph=400
 
 		var deltaHeight=150
 
-		var sortTextOffset = 150
+		var sortTextOffset = 175
 			
 		var sortTextSpacing = 75
 
@@ -200,43 +200,45 @@
 		var studentFilterBoolean=false;
 		var studentClick='all'
 
+		var yearClick='2016-17'
+
 		function mouse_hover(data, index, xaxis, text, value){
 									svg1.append('text')
 								   			.attr('class', 'hover')
-								   			.text(text + ': ' + Math.round(value*100)/100)
-								   			.attr('x', (index * barspacing) + textspacing * 8 + 2.5 + padding)
-								   			.attr('y', xaxis + 23)
+								   			.text(text.substring(0, 12) + ': ' + Math.round(value*100)/100)
+								   			.attr('x', (index * barspacing) + textspacing*4.5 + padding)
+								   			.attr('y', xaxis + 20)
 								   			.attr('fill', 'white')
 								   			.transition()
-								   			.delay(400)
+								   			.delay(200)
 								   			.duration(300)
 								   			.attr('fill', 'black')
 								   		svg1.append("line")
 								   			.attr('class', 'hover')
 								   			.style('stroke-dasharray', ('3, 3'))
 								   			.attr('x1', index * barspacing + textspacing + padding)
-								   			.attr('y1', xaxis + 5)
+								   			.attr('y1', xaxis + 10)
 								   			.attr('x2', index * barspacing + textspacing + padding)
-								   			.attr('y2', xaxis + 5)
+								   			.attr('y2', xaxis + 10)
 								   			.transition()
 								   			.duration(200)
-								   			.attr('x2', (index * barspacing) + textspacing * 4 + padding)
-								   			.attr('y2', xaxis + 20)
+								   			.attr('x2', (index * barspacing) + textspacing + padding)
+								   			.attr('y2', xaxis + 25)
 								   			.attr('stroke-width', 1)
 								   			.attr('stroke', 'black')
 
 								   		svg1.append('line')
 								   			.attr('class', 'hover')
 								   			.style('stroke-dasharray', ('3, 3'))
-								   			.attr('x1', (index * barspacing) + textspacing * 4 + padding)
-								   			.attr('y1', xaxis + 20)
-								   			.attr('x2', (index * barspacing) + textspacing * 4 + padding)
-								   			.attr('y2', xaxis + 20)
+								   			.attr('x1', (index * barspacing) + textspacing  + padding)
+								   			.attr('y1', xaxis + 25)
+								   			.attr('x2', (index * barspacing) + textspacing *4 + padding)
+								   			.attr('y2', xaxis + 25)
 								   			.transition()
 								   			.delay(200)
 								   			.duration(200)
-								   			.attr('x2', (index * barspacing) + textspacing * 8 + padding)
-								   			.attr('y2', xaxis + 20)
+								   			.attr('x2', (index * barspacing) + textspacing *15 + padding)
+								   			.attr('y2', xaxis + 25)
 								   			.attr('stroke-width', 1)
 								   			.attr('stroke', 'black')
 								}
@@ -286,7 +288,7 @@
 
 
 											var currentYear=studentFiltered.filter(function(d){
-												return d['year']=='2016-17'
+												return d['year']==yearClick
 											})
 
 										
@@ -320,6 +322,13 @@
 												return false
 											}
 
+											barwidth =
+												(width-300)/currentNested.length>=20?
+												20:
+												(width-300)/currentNested.length
+
+
+											barspacing = barwidth + 1
 
 
 											var xaxisGraphOne = 200
@@ -339,7 +348,7 @@
 											var datasetSort = currentNested.sort(function(a, b){return b.values['fte'] - a.values['fte'];})
 												
 											svg1.append('text')
-												.text('Total FTE values')
+												.text('Total FTE values, ' + yearClick)
 												.attr('x', width/3)
 												.attr('y', 20)
 												.attr('class', 'subtitleText currentYear')
@@ -382,7 +391,7 @@
 														.on('mouseover', function(d, i){
 															d3.select(this).attr('opacity', 1)
 															mouse_hover(d, i, xaxisGraphOne, d['key'], d.values['fte']);
-															let hovered = d['key'].replace(/\s/g, "").replace("'", '')
+															let hovered = d['key'].replace(/\s/g, "").replace("'", '').replace("/", '')
 															d3.selectAll("#" + hovered).attr('opacity', 1)
 														})
 														.transition()
@@ -419,7 +428,7 @@
 														.on('mouseover', function(d, i){
 															d3.select(this).attr('opacity', 1)
 															mouse_hover(d, i, xaxisGraphOne, d['key'], d.values['fte']);
-															let hovered = d['key'].replace(/\s/g, "").replace("'", '')
+															let hovered = d['key'].replace(/\s/g, "").replace("'", '').replace("/", '')
 															d3.selectAll("#" + hovered).attr('opacity', 1)
 														})
 														.transition()
@@ -427,7 +436,7 @@
 														.attr('x', function(d, i){return i * barspacing + padding})
 												})
 
-											
+											var totalYOffset = 15
 
 											svg1.selectAll('.currentTotal')
 												.data(datasetSort)
@@ -441,17 +450,17 @@
 												.attr('width', barwidth)
 												.attr('fill', 'black')
 												.attr('id', function(d){
-													return d['key'].replace(/\s/g, "").replace("'", '');
+													return d['key'].replace(/\s/g, "").replace("'", '').replace("/", '');
 												})
 												.attr('opacity', 0.2)
 												.on('mouseover', function(d, i){
 													d3.select(this).attr('opacity', 1)
 													mouse_hover(d, i, xaxisGraphOne, d['key'], d.values['fte']);
-													let hovered = d['key'].replace(/\s/g, "").replace("'", '')
+													let hovered = d['key'].replace(/\s/g, "").replace("'", '').replace("/", '')
 													d3.selectAll("#" + hovered).attr('opacity', 1)
 												})
 												.on('mouseout', function(d){
-													let hovered = d['key'].replace(/\s/g, "").replace("'", '')
+													let hovered = d['key'].replace(/\s/g, "").replace("'", '').replace("/", '')
 													d3.select(this)
 														.attr('opacity', 0.2)
 													mouse_out();
@@ -461,7 +470,7 @@
 													filterAllBoolean=true;
 													d3.selectAll('.viewAll').attr('font-weight', 'normal')
 
-													let hovered = d['key'].replace(/\s/g, "").replace("'", '')
+													let hovered = d['key'].replace(/\s/g, "").replace("'", '').replace("/", '')
 
 													d3.selectAll('.currentTotal').attr('fill', 'black')
 													d3.select(this).attr('fill', 'blue')
@@ -493,9 +502,11 @@
 		}
 
 		function delta_graph(rawData){
+											var yearFiltered=rawData.filter(function(d){
+												return d['year']==yearClick;
+											})
 
-
-											var locFiltered=rawData.filter(function(d){
+											var locFiltered=yearFiltered.filter(function(d){
 												return locFilterBoolean? 
 													//true
 													d['location']==locClick:
@@ -536,6 +547,8 @@
 
 											
 
+
+
 											var delta_maxFTEs =d3.max(deltaData, function(d){
 												return Math.abs(+d.values['delta']);
 											})
@@ -545,6 +558,10 @@
 											})
 
 											if (delta_maxFTEs==undefined | delta_maxFTEs==0){
+												return false;
+											}
+
+											if (yearClick=='2009-10'){
 												return false;
 											}
 
@@ -569,6 +586,7 @@
 												.attr('y', xaxisDeltaGraph-bar2Scale(delta_maxFTEs)-10)
 												.attr('class', 'subtitleText currentYear')
 
+
 											svg1.selectAll('.currentDelta')
 												.data(deltaData.sort(function(a, b){return a.values['delta'] - b.values['delta'];}))
 												.enter()
@@ -584,7 +602,7 @@
 												})
 												.attr('opacity', 0.2)
 												.attr('id', function(d){
-													return d['key'].replace(/\s/g, "").replace("'", '');
+													return d['key'].replace(/\s/g, "").replace("'", '').replace("/", '');
 												})
 												.on('mouseover', function(d, i){
 													d3.select(this)
@@ -592,20 +610,20 @@
 
 													mouse_hover(d, i, xaxisDeltaGraph, d['key'], d.values['delta']);
 
-													let hovered = d['key'].replace(/\s/g, "").replace("'", '')
+													let hovered = d['key'].replace(/\s/g, "").replace("'", '').replace("/", '')
 													d3.selectAll("#" + hovered).attr('opacity', 1)
 												})
 												.on('mouseout', function(d, i){
 
 													d3.select(this).attr('opacity', 0.2)
 													mouse_out();
-													let hovered = d['key'].replace(/\s/g, "").replace("'", '')
+													let hovered = d['key'].replace(/\s/g, "").replace("'", '').replace("/", '')
 													d3.selectAll("#" + hovered).attr('opacity', 0.2)
 												})
 												.on('click', function(d){
 													filterAllBoolean=true;
 													d3.selectAll('.viewAll').attr('font-weight', 'normal')
-													let hovered = d['key'].replace(/\s/g, "").replace("'", '')
+													let hovered = d['key'].replace(/\s/g, "").replace("'", '').replace("/", '')
 
 													d3.selectAll('.currentDelta').attr('fill', function(d){
 														return d.values['delta'] > 0? 'green': 'red';
@@ -658,6 +676,8 @@ function distributionGraph(raw){
 												.attr('class', 'dyn-axis2 sideDynamic dist')
 												.attr('transform', 'translate(' + (distribution_offset) + ',' + yearGraph_topPadding + ')')
 												.call(bar4yaxis)
+
+
 
 											var bar4xscale=d3.scale.linear()
 												.domain([0, dist_maxFTE> 1.1? dist_maxFTE: 1.1])
@@ -819,28 +839,35 @@ function detail_graphs(d, click) {
 												return +d.values['fte'];
 											})
 
+											let baseScale = yearMaxFTEs >= 1600? 1100: 0;
+
+											let xwidth=20
+											let xspacing=xwidth+1
+
+											
+
 											var bar3scale = d3.scale.linear()
-												.domain([0, yearMaxFTEs])
+												.domain([baseScale, yearMaxFTEs])
 												.range([0, yearGraph_xaxis])
 
 											var xAxis3Scale = d3.scale.linear()
 												.domain([2009, 2017])
-												.range([0, (barspacing) * (2017-2009)])
+												.range([0, (xspacing) * (2017-2009)])
 
 											var yAxis3Scale = d3.scale.linear()
-												.domain([yearMaxFTEs, 0])
+												.domain([yearMaxFTEs, baseScale])
 												.range([0, yearGraph_xaxis])
 
 											var xAxis3 = d3.svg.axis().scale(xAxis3Scale).orient('bottom').tickFormat(d3.format('d')).outerTickSize(0)
 
 											var xAxis3line = svg2.append('g')
 												.attr('class', 'dyn-axis sideDynamic yearAxis')
-												.attr('transform', 'translate(' + (padding+0.25*barwidth) + ',' + (yearGraph_xaxis+yearGraph_topPadding) + ')')
+												.attr('transform', 'translate(' + (padding+0.25*xwidth) + ',' + (yearGraph_xaxis+yearGraph_topPadding) + ')')
 												.call(xAxis3.ticks(4))
 													.selectAll('text')
 													.style('text-anchor', 'end')
 													.attr('dx', '2em')
-													.attr('transform', 'translate(' + barwidth + ', 0)rotate(45)')
+													.attr('transform', 'translate(0, 5)rotate(45)')
 
 											var yAxis3 = d3.svg.axis().scale(yAxis3Scale).orient('left')
 
@@ -851,12 +878,12 @@ function detail_graphs(d, click) {
 
 											var subtitle1 = svg2.append('text')
 												.text('Year-by-Year FTEs')
-												.attr('x', (barspacing * 8)/2)
+												.attr('x', (xspacing * 8)/2)
 												.attr('y', yearGraph_topPadding-10)
 												.attr('class', 'sideSubtitleText sideDynamic')
 
 											var yearLine = d3.svg.line()
-												.x(function(d, i){return (d['key'].substring(0, 4)-2009) * barspacing + padding;})
+												.x(function(d, i){return (d['key'].substring(0, 4)-2009) * xspacing + padding;})
 												.y(function(d){return yearGraph_xaxis + yearGraph_topPadding - bar3scale(d.values['fte']);})
 
 											var filteredSorted = filteredRollup.sort(function(a, b){
@@ -874,8 +901,7 @@ function detail_graphs(d, click) {
 												.duration(300)
 												.attr('opacity', 1)
 
-											
-
+										
 											svg2.selectAll('.yearGraph')
 												.data(filteredSorted)
 												.enter()
@@ -884,7 +910,7 @@ function detail_graphs(d, click) {
 												.attr('r', 5)
 												.attr('class', 'yearGraph sideDynamic')
 												.attr('cy', 0)
-												.attr('cx', function(d, i){return (d['key'].substring(0, 4)-2009) * barspacing + padding;})
+												.attr('cx', function(d, i){return (d['key'].substring(0, 4)-2009) * xspacing + padding;})
 												.attr('opacity', 0.2)
 												.on('mouseover', function(d){
 													d3.select(this).attr('opacity', 0.4)
@@ -894,13 +920,22 @@ function detail_graphs(d, click) {
 													svg2.append('text')
 														.attr('class', 'hover')
 														.attr('y', yearGraph_xaxis + yearGraph_topPadding - bar3scale(yearFTE)-5)
-														.attr('x', (d['key'].substring(0, 4)-2009) * barspacing + padding + 5)
+														.attr('x', (d['key'].substring(0, 4)-2009) * xspacing + padding + 5)
 														.text(yearFTE)
 												})
 												.on('mouseout', function(d){
 													d3.select(this).attr('opacity', 0.2)
 
 													d3.selectAll('.hover').remove()
+												})
+												.on('click', function(d){
+													yearClick = d['key']
+													d3.selectAll('.navBarYear').attr('font-weight', 'normal')
+
+													d3.selectAll('#y' + d['key'].replace('-', '')).attr('font-weight', 'bold')
+
+													current_year(fteData);
+													d3.csv('fteDelta.csv', delta_graph);
 												})
 												.transition()
 												.duration(1000)
@@ -1010,7 +1045,7 @@ function detail_graphs(d, click) {
 															d3.select(this).attr('font-weight', 'bold')
 
 															let filteredValues = filterTwo.filter(function(d){
-																return d['year']=='2016-17'
+																return d['year']==yearClick
 															})
 
 															let rawFilter = d3.nest()
@@ -1328,7 +1363,7 @@ topNavigationSVG.append('text')
 
 		d3.select(this).attr('font-weight', 'bold')
 
-		locClick='HA'
+		locClick='HO'
 		locFilterBoolean=true;
 
 		current_year(fteData);
@@ -1338,7 +1373,7 @@ topNavigationSVG.append('text')
 		d3.select(this).attr('font-weight', 'bold')
 	})
 	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', locClick=='HA'? 'bold': 'normal')
+		d3.select(this).attr('font-weight', locClick=='HO'? 'bold': 'normal')
 	})
 
 topNavigationSVG.append('text')
@@ -1366,9 +1401,33 @@ topNavigationSVG.append('text')
 	})
 
 topNavigationSVG.append('text')
+	.text('Regional')
+	.attr('x', navX+navXInitialOffset*5)
+	.attr('y', navY*2)
+	.attr('class', 'navBar navBarLoc')
+	.on('click', function(){
+
+		d3.selectAll('.navBarLoc').attr('font-weight', 'normal')
+
+		d3.select(this).attr('font-weight', 'bold')
+
+		locClick='RE'
+		locFilterBoolean=true;
+
+		current_year(fteData);
+		d3.csv('fteDelta.csv', delta_graph);
+	})
+	.on('mouseover', function(){
+		d3.select(this).attr('font-weight', 'bold')
+	})
+	.on('mouseout', function(){
+		d3.select(this).attr('font-weight', locClick=='RE'? 'bold': 'normal')
+	})
+
+topNavigationSVG.append('text')
 	.text('View All Years Details')
-	.attr('x',  (width+margin)*1.4)
-	.attr('y', 25)
+	.attr('x',  (width+margin) + width2*0.65)
+	.attr('y', navY*2.5)
 	.attr('class', 'viewAll')
 	.on('click', function(){
 		filterAllBoolean=false;
@@ -1453,6 +1512,196 @@ topNavigationSVG.append('text')
 	.on('mouseout', function(){
 		d3.select(this).attr('font-weight', studentClick=='ie'? 'bold': 'normal')
 	})
+
+var yearCenter=20
+
+topNavigationSVG.append('text')
+	.text('2016-17')
+	.attr('x',  initialX+yearCenter)
+	.attr('y', navY*4)
+	.attr('class', 'navBar navBarYear')
+	.attr('font-weight', 'bold')
+	.attr('id', 'y201617')
+	.on('click', function(){
+
+		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
+		d3.select(this).attr('font-weight', 'bold')
+
+		yearClick='2016-17'
+
+		current_year(fteData);
+		d3.csv('fteDelta.csv', delta_graph);
+	})
+	.on('mouseover', function(){
+		d3.select(this).attr('font-weight', 'bold')
+	})
+	.on('mouseout', function(){
+		d3.select(this).attr('font-weight', yearClick=='2016-17'? 'bold': 'normal')
+	})
+
+topNavigationSVG.append('text')
+	.text('2015-16')
+	.attr('x',  navX+yearCenter)
+	.attr('y', navY*4)
+	.attr('id', 'y201516')
+	.attr('class', 'navBar navBarYear')
+	.on('click', function(){
+
+		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
+		d3.select(this).attr('font-weight', 'bold')
+
+		yearClick='2015-16'
+
+		current_year(fteData);
+		d3.csv('fteDelta.csv', delta_graph);
+	})
+	.on('mouseover', function(){
+		d3.select(this).attr('font-weight', 'bold')
+	})
+	.on('mouseout', function(){
+		d3.select(this).attr('font-weight', yearClick=='2015-16'? 'bold': 'normal')
+	})
+
+topNavigationSVG.append('text')
+	.text('2014-15')
+	.attr('x',  navX+yearCenter+navXInitialOffset)
+	.attr('y', navY*4)
+	.attr('id', 'y201415')
+	.attr('class', 'navBar navBarYear')
+	.on('click', function(){
+
+		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
+		d3.select(this).attr('font-weight', 'bold')
+
+		yearClick='2014-15'
+
+		current_year(fteData);
+		d3.csv('fteDelta.csv', delta_graph);
+	})
+	.on('mouseover', function(){
+		d3.select(this).attr('font-weight', 'bold')
+	})
+	.on('mouseout', function(){
+		d3.select(this).attr('font-weight', yearClick=='2014-15'? 'bold': 'normal')
+	})
+
+topNavigationSVG.append('text')
+	.text('2013-14')
+	.attr('x',  navX+yearCenter+navXInitialOffset*2)
+	.attr('y', navY*4)
+	.attr('id', 'y201314')
+	.attr('class', 'navBar navBarYear')
+	.on('click', function(){
+
+		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
+		d3.select(this).attr('font-weight', 'bold')
+
+		yearClick='2013-14'
+
+		current_year(fteData);
+		d3.csv('fteDelta.csv', delta_graph);
+	})
+	.on('mouseover', function(){
+		d3.select(this).attr('font-weight', 'bold')
+	})
+	.on('mouseout', function(){
+		d3.select(this).attr('font-weight', yearClick=='2013-14'? 'bold': 'normal')
+	})
+
+topNavigationSVG.append('text')
+	.text('2012-13')
+	.attr('x',  navX+yearCenter+navXInitialOffset*3)
+	.attr('y', navY*4)
+	.attr('id', 'y201213')
+	.attr('class', 'navBar navBarYear')
+	.on('click', function(){
+
+		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
+		d3.select(this).attr('font-weight', 'bold')
+
+		yearClick='2012-13'
+
+		current_year(fteData);
+		d3.csv('fteDelta.csv', delta_graph);
+	})
+	.on('mouseover', function(){
+		d3.select(this).attr('font-weight', 'bold')
+	})
+	.on('mouseout', function(){
+		d3.select(this).attr('font-weight', yearClick=='2012-13'? 'bold': 'normal')
+	})
+
+topNavigationSVG.append('text')
+	.text('2011-12')
+	.attr('x',  navX+yearCenter+navXInitialOffset*4)
+	.attr('y', navY*4)
+	.attr('id', 'y201112')
+	.attr('class', 'navBar navBarYear')
+	.on('click', function(){
+
+		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
+		d3.select(this).attr('font-weight', 'bold')
+
+		yearClick='2011-12'
+
+		current_year(fteData);
+		d3.csv('fteDelta.csv', delta_graph);
+	})
+	.on('mouseover', function(){
+		d3.select(this).attr('font-weight', 'bold')
+	})
+	.on('mouseout', function(){
+		d3.select(this).attr('font-weight', yearClick=='2011-12'? 'bold': 'normal')
+	})
+
+topNavigationSVG.append('text')
+	.text('2010-11')
+	.attr('x',  navX+yearCenter+navXInitialOffset*5)
+	.attr('y', navY*4)
+	.attr('id', 'y201011')
+	.attr('class', 'navBar navBarYear')
+	.on('click', function(){
+
+		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
+		d3.select(this).attr('font-weight', 'bold')
+
+		yearClick='2010-11'
+
+		current_year(fteData);
+		d3.csv('fteDelta.csv', delta_graph);
+	})
+	.on('mouseover', function(){
+		d3.select(this).attr('font-weight', 'bold')
+	})
+	.on('mouseout', function(){
+		d3.select(this).attr('font-weight', yearClick=='2010-11'? 'bold': 'normal')
+	})
+
+topNavigationSVG.append('text')
+	.text('2009-10')
+	.attr('x',  navX+yearCenter+navXInitialOffset*6)
+	.attr('y', navY*4)
+	.attr('id', 'y200910')
+	.attr('class', 'navBar navBarYear')
+	.on('click', function(){
+
+		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
+		d3.select(this).attr('font-weight', 'bold')
+
+		yearClick='2009-10'
+
+		current_year(fteData);
+		d3.csv('fteDelta.csv', delta_graph);
+	})
+	.on('mouseover', function(){
+		d3.select(this).attr('font-weight', 'bold')
+	})
+	.on('mouseout', function(){
+		d3.select(this).attr('font-weight', yearClick=='2009-10'? 'bold': 'normal')
+	})
+
+///creating rectangles for backgrounds
+
 
 }
 	</script>

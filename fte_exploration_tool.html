@@ -113,6 +113,50 @@
 		border-bottom: 1px solid black;
 		border-top: 1px solid black;
 	}
+	.buttons div {
+        padding: 3px;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-top:1px;
+        margin-right: 1px;
+        margin-left: 1px;
+        float: left;
+        display: inline-block;
+        white-space: nowrap;
+        cursor: pointer;
+        font-family: sans-serif;
+        font-size: 11px;
+        font-weight: bold;
+        color: white;
+	}
+	.prog_buttons {
+        position: absolute;
+        top: 130px;
+        left: 50px;
+	}
+	.loc_buttons {
+        position: absolute;
+        top: 110px;
+        left: 50px;
+	}
+	.student_buttons {
+		position: absolute;
+		top: 150px;
+		left: 50px;
+	}
+	.years_buttons {
+		position: absolute;
+		top: 90px;
+		left: 50px;
+	}
+	.selectAll_buttons {
+		position: absolute;
+		top: 142px;
+		left: 1100px;
+	}
+	.selectAll_buttons div {
+		font-size: 16px;
+	}
 
 	</style>
 
@@ -125,7 +169,7 @@
 			width=750 - margin,
 			height=450 - margin,
 			width2=800,
-			navHeight=90;
+			navHeight=80;
 
 		d3.select('body')
 			.append('h2')
@@ -133,7 +177,7 @@
 
 		d3.select('body')
 			.append('h3')
-			.text('Click on any bar to the left to display detailed statistics')
+			.text('Click on any bar to the left to display detailed statistics; use the filters on the top to narrow your search')
 
 		var topNavigationSVG = d3.select('body')
 			.append('svg')
@@ -932,9 +976,17 @@ function detail_graphs(d, click) {
 												})
 												.on('click', function(d){
 													yearClick = d['key']
-													d3.selectAll('.navBarYear').attr('font-weight', 'normal')
+													
+													d3.select('.years_buttons')
+														.selectAll('div')
+														.transition()
+														.duration(500)
+														.style('background', 'lightblue')
 
-													d3.selectAll('#y' + d['key'].replace('-', '')).attr('font-weight', 'bold')
+													d3.select('.years_buttons').selectAll('#y' + yearClick.replace('-', ''))
+														.transition()
+														.duration(500)
+														.style('background', 'dodgerblue')
 
 													current_year(fteData);
 													d3.csv('fteDelta.csv', delta_graph);
@@ -1090,20 +1142,52 @@ d3.csv('fteDelta.csv', delta_graph)
 
 var clusterClick='all'
 
+
+
 //Creating clusters
 
-function clusterFunction(clusterClick){
-	let cluster_fteData=fteData.filter(function(d){
-				return d['cluster']==clusterClick
-			})
-			current_year(cluster_fteData);
-			d3.csv('fteDelta.csv', function(d){
-				let fteDelta = d.filter(function(d){
-					return d['cluster']==clusterClick
-				})
-				delta_graph(fteDelta)
-			})
-	}
+var programs=[
+		
+		{key: 'all', value: 'View all Programs'},
+		{key: 'abe', value: 'Adult Basic Education'},
+		{key: 'academic', value: 'Academic'},
+		{key: 'trades', value: 'Trades'},
+		{key: 'health', value: 'Health'},
+		{key: 'arts', value: 'Arts'},
+		{key: 'ce', value: 'Continuing Education'}
+
+];
+
+var locations=[
+		{key: 'all', value: 'View all locations'},
+		{key: 'TE', value: 'Terrace'},
+		{key: 'PR', value: 'Prince Rupert'},
+		{key: 'HA', value: 'Hazelton'},
+		{key: 'HO', value: 'Houston'},
+		{key: 'SM', value: 'Smithers'},
+		{key: 'RE', value: 'Regional'}
+]
+
+var years=[
+		{key: '201617', value:'2016-17'},
+		{key: '201516', value:'2015-16'},
+		{key: '201415', value:'2014-15'},
+		{key: '201314', value:'2013-14'},
+		{key: '201213', value:'2012-13'},
+		{key: '201112', value:'2011-12'},
+		{key: '201011', value:'2010-11'},
+		{key: '200910', value:'2009-10'}
+]
+
+var students=[
+		{key: 'all', value: 'View all students'},
+		{key: 'fn', value: 'Aboriginal Students'},
+		{key: 'ie', value: 'International Students'}
+]
+
+var selectAll=[
+		{key: 'View all Programs Details', value: 'all'}	
+]
 
 var initialX=75
 var navY = 20
@@ -1111,603 +1195,166 @@ var navX= 200
 var navXInitialOffset = 150
 var programY=navY*2
 
-topNavigationSVG.append('text')
-.text('View all programs')
-	.attr('x', initialX)
-	.attr('y', programY)
-	.attr('class', 'navBar navBarProg')
-	.attr('font-weight', 'bold')
-	.on('click', function(){
-		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
+var selectAllButton = d3.select('body')
+		.append('div')
+		.attr('class', 'buttons selectAll_buttons')
+		.selectAll('div')
+		.data(selectAll)
+		.enter()
+		.append('div')
+		.text(function(d){return d['key']})
+		.style('background', 'lightblue')
+		.style('color', 'white')
+		.style('font-weight', 'bold')
+		.on('click', function(d){
+			d3.select(this)
+					.transition()
+					.duration(500)
+					.style('background', 'dodgerblue')
 
-		clusterClick='all',
-		progFilterBoolean=false;
+			filterAllBoolean=false;
 
-		current_year(fteData);
+			detail_graphs(0, 'All Years')
+		})
 
-		d3.csv('fteDelta.csv', delta_graph)
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', clusterClick=='all'? 'bold': 'normal')
-	})
 
-topNavigationSVG.append('text')
-	.text('Adult Basic Education')
-	.attr('x', navX)
-	.attr('y', programY)
-	.attr('class', 'navBar navBarProg')
-	.on('click', function(){
-		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-		clusterClick='abe'
-		progFilterBoolean=true;
-		
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', clusterClick=='abe'? 'bold': 'normal')
-	})
+var progButtons = d3.select('body')
+		.append('div')
+		.attr('class', 'buttons prog_buttons')
+		.selectAll('div')
+		.data(programs)
+		.enter()
+		.append('div')
+		.text(function(d){return d['value']})
+		.style('background', function(d){return clusterClick==d['key']? "dodgerblue": 'lightblue'})
+		.on('click', function(d){
+			d3.select('.prog_buttons')
+					.selectAll('div')
+					.transition()
+					.duration(500)
+					.style('background', 'lightblue')
 
-topNavigationSVG.append('text')
-	.text('Academic')
-	.attr('x', navX+navXInitialOffset*1)
-	.attr('y', programY)
-	.attr('class', 'navBar navBarProg')
-	.on('click', function(){
-		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-		clusterClick='academic'
-		progFilterBoolean=true;
-		
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', clusterClick=='academic'? 'bold': 'normal')
-	})
+			d3.select(this)
+					.transition()
+					.duration(500)
+					.style('background', 'dodgerblue')
 
-topNavigationSVG.append('text')
-	.text('Trades')
-	.attr('x', navX+navXInitialOffset*2)
-	.attr('y', programY)
-	.attr('class', 'navBar navBarProg')
-	.on('click', function(){
-		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-		clusterClick='trades'
-		progFilterBoolean=true;
-		
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', clusterClick=='trades'? 'bold': 'normal')
-	})
+			d3.select('.selectAll_buttons').selectAll('div').transition().duration(500).style('background', 'lightblue')
+			
 
-topNavigationSVG.append('text')
-	.text('Health')
-	.attr('x', navX+navXInitialOffset*3)
-	.attr('y', programY)
-	.attr('class', 'navBar navBarProg')
-	.on('click', function(){
-		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-		clusterClick='health'
-		progFilterBoolean=true;
-		
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', clusterClick=='health'? 'bold': 'normal')
-	})
+			clusterClick=d['key']
 
-topNavigationSVG.append('text')
-	.text('Arts')
-	.attr('x', navX+navXInitialOffset*4)
-	.attr('y', programY)
-	.attr('class', 'navBar navBarProg')
-	.on('click', function(){
-		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-		clusterClick='arts'
-		progFilterBoolean=true;
-	
-	current_year(fteData);
-	d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', clusterClick=='arts'? 'bold': 'normal')
-	})
+			progFilterBoolean=clusterClick=='all'? false: true;
 
-topNavigationSVG.append('text')
-	.text('Continuing Education')
-	.attr('x', navX+navXInitialOffset*5)
-	.attr('y', programY)
-	.attr('class', 'navBar navBarProg')
-	.on('click', function(){
-		d3.selectAll('.navBarProg').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-		clusterClick='ce'
-		progFilterBoolean=true;
-		
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', clusterClick=='ce'? 'bold': 'normal')
-	})
+			current_year(fteData);
+			d3.csv('fteDelta.csv', delta_graph);
+		})
 
 //Location Filters
 
 var locationY=navY*3
 
-topNavigationSVG.append('text')
-	.text('View all locations')
-	.attr('x', initialX)
-	.attr('y', locationY)
-	.attr('font-weight', 'bold')
-	.attr('class', 'navBar navBarLoc')
-	.on('click', function(){
-		d3.selectAll('.navBarLoc').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
+var locationButtons =  d3.select('body')
+		.append('div')
+		.attr('class', 'buttons loc_buttons')
+		.selectAll('div')
+		.data(locations)
+		.enter()
+		.append('div')
+		.text(function(d){return d['value']})
+		.style('background', function(d){return locClick==d['key']? "dodgerblue": 'lightblue'})
+		
+		.on('click', function(d){
+			d3.select('.loc_buttons')
+					.selectAll('div')
+					.transition()
+					.duration(500)
+					.style('background', 'lightblue')
 
-		locClick='all'
-		locFilterBoolean=false;
+			d3.select(this)
+					.transition()
+					.duration(500)
+					.style('background', 'dodgerblue')
 
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', locClick=='all'? 'bold': 'normal')
-	})
+			d3.select('.selectAll_buttons').selectAll('div').transition().duration(500).style('background', 'lightblue')
 
-topNavigationSVG.append('text')
-	.text('Terrace')
-	.attr('x', navX)
-	.attr('y', locationY)
-	.attr('class', 'navBar navBarLoc')
-	.on('click', function(){
-		d3.selectAll('.navBarLoc').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
+			locClick=d['key']
 
-		locClick='TE'
-		locFilterBoolean=true;
+			locFilterBoolean=locClick=='all'? false: true;
 
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', locClick=='TE'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('Prince Rupert')
-	.attr('x', navX+navXInitialOffset)
-	.attr('y', locationY)
-	.attr('class', 'navBar navBarLoc')
-	.on('click', function(){
-		d3.selectAll('.navBarLoc').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-
-		locClick='PR'
-		locFilterBoolean=true;
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', locClick=='PR'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('Hazelton')
-	.attr('x', navX+navXInitialOffset*2)
-	.attr('y', locationY)
-	.attr('class', 'navBar navBarLoc')
-	.on('click', function(){
-
-		d3.selectAll('.navBarLoc').attr('font-weight', 'normal')
-
-		d3.select(this).attr('font-weight', 'bold')
-
-		locClick='HA'
-		locFilterBoolean=true;
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', locClick=='HA'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('Houston')
-	.attr('x', navX+navXInitialOffset*3)
-	.attr('y', locationY)
-	.attr('class', 'navBar navBarLoc')
-	.on('click', function(){
-
-		d3.selectAll('.navBarLoc').attr('font-weight', 'normal')
-
-		d3.select(this).attr('font-weight', 'bold')
-
-		locClick='HO'
-		locFilterBoolean=true;
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', locClick=='HO'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('Smithers')
-	.attr('x', navX+navXInitialOffset*4)
-	.attr('y', locationY)
-	.attr('class', 'navBar navBarLoc')
-	.on('click', function(){
-
-		d3.selectAll('.navBarLoc').attr('font-weight', 'normal')
-
-		d3.select(this).attr('font-weight', 'bold')
-
-		locClick='SM'
-		locFilterBoolean=true;
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', locClick=='SM'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('Regional')
-	.attr('x', navX+navXInitialOffset*5)
-	.attr('y', locationY)
-	.attr('class', 'navBar navBarLoc')
-	.on('click', function(){
-
-		d3.selectAll('.navBarLoc').attr('font-weight', 'normal')
-
-		d3.select(this).attr('font-weight', 'bold')
-
-		locClick='RE'
-		locFilterBoolean=true;
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', locClick=='RE'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('View All Programs Details')
-	.attr('x',  (width+margin) + width2*0.65)
-	.attr('y', navY*2.5)
-	.attr('class', 'viewAll')
-	.on('click', function(){
-		filterAllBoolean=false;
-		d3.select(this).attr('font-weight', 'bold')
-		detail_graphs(0, 'All Years')
-	})
-	.on('mouseover', function(d){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(d){
-		d3.select(this).attr('font-weight', function(){
-			return filterAllBoolean? 'normal': 'bold'
+			current_year(fteData);
+			d3.csv('fteDelta.csv', delta_graph);
 		})
-	})
 
 var studentY=navY*4
 
-topNavigationSVG.append('text')
-	.text('View all students')
-	.attr('x',  initialX)
-	.attr('y', studentY)
-	.attr('font-weight', 'bold')
-	.attr('class', 'navBar navBarStudent')
-	.on('click', function(){
+var studentButtons =  d3.select('body')
+		.append('div')
+		.attr('class', 'buttons student_buttons')
+		.selectAll('div')
+		.data(students)
+		.enter()
+		.append('div')
+		.text(function(d){return d['value']})
+		.style('background', function(d){return studentClick==d['key']? "dodgerblue": 'lightblue'})
+		
+		.on('click', function(d){
+			d3.select('.student_buttons')
+					.selectAll('div')
+					.transition()
+					.duration(500)
+					.style('background', 'lightblue')
 
-		d3.selectAll('.navBarStudent').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
+			d3.select(this)
+					.transition()
+					.duration(500)
+					.style('background', 'dodgerblue')
 
-		studentClick='all'
-		studentFilterBoolean=false;
+			d3.select('.selectAll_buttons').selectAll('div').transition().duration(500).style('background', 'lightblue')
 
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', studentClick=='all'? 'bold': 'normal')
-	})
+			studentClick=d['key']
 
-topNavigationSVG.append('text')
-	.text('Aboriginal Students')
-	.attr('x',  navX)
-	.attr('y', studentY)
-	.attr('class', 'navBar navBarStudent')
-	.on('click', function(){
+			studentFilterBoolean=studentClick=='all'? false: true;
 
-		d3.selectAll('.navBarStudent').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
+			current_year(fteData);
+			d3.csv('fteDelta.csv', delta_graph);
+		})
 
-		studentClick='fn'
-		studentFilterBoolean=true;
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', studentClick=='fn'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('International Students')
-	.attr('x',  navX+ navXInitialOffset)
-	.attr('y', studentY)
-	.attr('class', 'navBar navBarStudent')
-	.on('click', function(){
-
-		d3.selectAll('.navBarStudent').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-
-		studentClick='ie'
-		studentFilterBoolean=true;
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', studentClick=='ie'? 'bold': 'normal')
-	})
 
 var yearCenter=0
 var yearY=navY
 
-topNavigationSVG.append('text')
-	.text('2016-17')
-	.attr('x',  initialX+yearCenter)
-	.attr('y', yearY)
-	.attr('class', 'navBar navBarYear')
-	.attr('font-weight', 'bold')
-	.attr('id', 'y201617')
-	.on('click', function(){
+var yearButtons =  d3.select('body')
+		.append('div')
+		.attr('class', 'buttons years_buttons')
+		.selectAll('div')
+		.data(years)
+		.enter()
+		.append('div')
+		.attr('id', function(d){return 'y' + d['key'];})
+		.text(function(d){return d['value']})
+		.style('background', function(d){return yearClick==d['value']? "dodgerblue": 'lightblue'})
+		.on('click', function(d){
+			d3.select('.years_buttons')
+				.selectAll('div')
+				.transition()
+				.duration(500)
+				.style('background', 'lightblue')
 
-		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
+			d3.select(this)
+				.transition()
+				.duration(500)
+				.style('background', 'dodgerblue')
 
-		yearClick='2016-17'
+			d3.select('.selectAll_buttons').selectAll('div').transition().duration(500).style('background', 'lightblue')
 
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', yearClick=='2016-17'? 'bold': 'normal')
-	})
+			yearClick=d['value']
 
-topNavigationSVG.append('text')
-	.text('2015-16')
-	.attr('x',  navX+yearCenter)
-	.attr('y', yearY)
-	.attr('id', 'y201516')
-	.attr('class', 'navBar navBarYear')
-	.on('click', function(){
+			
+			current_year(fteData);
+			d3.csv('fteDelta.csv', delta_graph);
+		})
 
-		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-
-		yearClick='2015-16'
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', yearClick=='2015-16'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('2014-15')
-	.attr('x',  navX+yearCenter+navXInitialOffset)
-	.attr('y', yearY)
-	.attr('id', 'y201415')
-	.attr('class', 'navBar navBarYear')
-	.on('click', function(){
-
-		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-
-		yearClick='2014-15'
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', yearClick=='2014-15'? 'bold': 'normal')
-	})
-
-
-
-topNavigationSVG.append('text')
-	.text('2013-14')
-	.attr('x',  navX+yearCenter+navXInitialOffset*2)
-	.attr('y', yearY)
-	.attr('id', 'y201314')
-	.attr('class', 'navBar navBarYear')
-	.on('click', function(){
-
-		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-
-		yearClick='2013-14'
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', yearClick=='2013-14'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('2012-13')
-	.attr('x',  navX+yearCenter+navXInitialOffset*3)
-	.attr('y', yearY)
-	.attr('id', 'y201213')
-	.attr('class', 'navBar navBarYear')
-	.on('click', function(){
-
-		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-
-		yearClick='2012-13'
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', yearClick=='2012-13'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('2011-12')
-	.attr('x',  navX+yearCenter+navXInitialOffset*4)
-	.attr('y', yearY)
-	.attr('id', 'y201112')
-	.attr('class', 'navBar navBarYear')
-	.on('click', function(){
-
-		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-
-		yearClick='2011-12'
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', yearClick=='2011-12'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('2010-11')
-	.attr('x',  navX+yearCenter+navXInitialOffset*5)
-	.attr('y', yearY)
-	.attr('id', 'y201011')
-	.attr('class', 'navBar navBarYear')
-	.on('click', function(){
-
-		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-
-		yearClick='2010-11'
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', yearClick=='2010-11'? 'bold': 'normal')
-	})
-
-topNavigationSVG.append('text')
-	.text('2009-10')
-	.attr('x',  navX+yearCenter+navXInitialOffset*6)
-	.attr('y', yearY)
-	.attr('id', 'y200910')
-	.attr('class', 'navBar navBarYear')
-	.on('click', function(){
-
-		d3.selectAll('.navBarYear').attr('font-weight', 'normal')
-		d3.select(this).attr('font-weight', 'bold')
-
-		yearClick='2009-10'
-
-		current_year(fteData);
-		d3.csv('fteDelta.csv', delta_graph);
-	})
-	.on('mouseover', function(){
-		d3.select(this).attr('font-weight', 'bold')
-	})
-	.on('mouseout', function(){
-		d3.select(this).attr('font-weight', yearClick=='2009-10'? 'bold': 'normal')
-	})
 
 ///creating rectangles for backgrounds
 

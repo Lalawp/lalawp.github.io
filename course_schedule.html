@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="d3.v3.min.js"></script>
+	<style>
+	
+
+	</style>
+
+	<script type="text/javascript">
+	function schedule(secData){
+
+		d3.select('body')
+			.append('h2')
+			.text('Course Schedule Test')
+
+		var ucData=secData.filter(function(d){
+			return d['SEC_DEPTS']=='UC'
+		})
+
+		var margin=75,
+			width=window.innerWidth - margin,
+			height=450 - margin;
+
+		var svg1=d3.select('body')
+			.append('svg')
+			.attr('width', width+margin)
+			.attr('height', height+margin)
+			.append('g')
+			.attr('class', 'course_schedule');
+
+		var days = [
+			{key: 'Monday', value: '1'},
+			{key: 'Tuesday', value: '2'},
+			{key: 'Wednesday', value: '3'},
+			{key: 'Thursday', value: '4'},
+			{key: 'Friday', value: '5'}
+		]
+
+		var courseBlockWidth = 50
+		var courseBlockSpacing = 5
+
+		function plotCourseBlocks(){
+
+			var maxTime = d3.max(secData, function(d){
+				return +d['endTimeInteger']
+			})
+
+			debugger;
+
+			courseBlockYScale = d3.scale.linear()
+				.domain([0, maxTime])
+				.range([0, height])
+
+			svg1.selectAll('.courseBlocks')
+				.data(secData)
+				.enter()
+				.append('g')
+				.append('rect')
+				.attr('class', 'courseBlocks')
+				.attr('x', function(d){return +d['DoWIndex'] * (courseBlockWidth + courseBlockSpacing)})
+				.attr('y', function(d){return courseBlockYScale(+d['startTimeInteger']);})
+				.attr('width', courseBlockWidth)
+				.attr('height', function(d){return courseBlockYScale(+d['endTimeInteger'] - +d['startTimeInteger']);})
+				.attr('fill', 'black')
+				.attr('opacity', 0.1)
+				.attr('stroke', 'black')
+				.attr('stroke-width', 2)
+				.attr('id', function(d){return d['SEC_NAME'];})
+
+
+
+		}
+
+		plotCourseBlocks();
+	}
+
+
+	</script>
+</head>
+
+
+<body>
+	<script type="text/javascript">
+		d3.csv("testData.csv", schedule); 
+	</script>
+</body>
+</html>

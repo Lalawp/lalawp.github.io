@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<script src="d3.v3.min.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<style>
 h2 {
 		font-family: Tahoma;
@@ -82,9 +82,23 @@ h3 {
 									.enter()
 									.append('path')
 									.attr('d', path)
+									.attr('id', function(d){
+										return d.properties.CDNAME;
+									})
 									.style('fill', 'black')
 									.style('stroke', 'white')
-									.style('stroke-width', 0.5);
+									.style('stroke-width', 0.5)
+									.on('click', function(d){
+										d3.selectAll('path')
+											.transition()
+											.duration(500)
+											.style('fill', 'black')
+
+										d3.select(this)
+											.transition()
+											.duration(500)
+											.style('fill', 'red')
+									});
 
 					var w = 500;
 					var h = 200;
@@ -529,8 +543,6 @@ h3 {
 
 									   		let current_selection_market=d['key'];
 
-
-
 									   		let nest_market_data = dem_data_loc.filter(function(d){
 									   			return d['to_psi']==current_selection_market;
 									   		})
@@ -551,7 +563,6 @@ h3 {
 									   								})
 									   								.entries(nest_market_data)
 
-
 									   		svg2.selectAll('.rect-market-hover')
 												.data(age_nest_market)
 												.enter()
@@ -569,7 +580,6 @@ h3 {
 										   		.attr("height", function(d){return bar2_scale(d.values['students']);})
 										   		.attr('opacity', 1)
 											    .style('visibility', 'visible')
-
 
 											 let cip_nest_market = d3.nest()
 									   								.key(function(d){
@@ -593,7 +603,6 @@ h3 {
 									   								})
 									   								.entries(nest_market_data)
 
-
 									   		svg2.selectAll('.rect-cip-hover')
 												.data(cip_nest_market)
 												.enter()
@@ -611,11 +620,7 @@ h3 {
 										   		.attr("height", function(d){return bar3_scale(d.values['students']);})
 										   		.attr('opacity', 1)
 											    .style('visibility', 'visible')
-
-
 									   })
-
-									   
 
 									   .on('mouseout', function(d){
 									   		d3.select(this)
@@ -633,8 +638,6 @@ h3 {
 									   		d3.selectAll('.rect-cip-click').remove()
 
 									   		var current_selection_market=d['key'];
-
-
 
 									   		let nest_market_data = dem_data_loc.filter(function(d){
 									   			return d['to_psi']==current_selection_market;
@@ -655,7 +658,6 @@ h3 {
 									   									}
 									   								})
 									   								.entries(nest_market_data)
-
 
 									   		svg2.selectAll('.rect-market-click')
 												.data(age_nest_market)
@@ -684,8 +686,6 @@ h3 {
 									   									return d['simplified_cip']
 									   								})
 									   								.rollup(function(leaves){
-
-
 									   									var total=d3.sum(leaves, function(d){
 									   										return d['count'];
 									   									})
@@ -700,7 +700,6 @@ h3 {
 									   									}
 									   								})
 									   								.entries(nest_market_data)
-
 
 									   		svg2.selectAll('.rect-cip-click')
 												.data(cip_nest_market)
@@ -728,7 +727,6 @@ h3 {
 											    	d3.selectAll('.rect-cip-click').attr('opacity', 0.7)
 											    })
 
-
 										d3.csv('market_share_linegraph.csv', function(d){
 											let first_filter=d.filter(function(d){
 												return d['to_psi']==current_selection_market
@@ -748,15 +746,8 @@ h3 {
 											svg3.append('g')
 												.attr('class', 'line')
 												.attr('d', 10);
-
 										})
-
-
 									   })
-
-								 	
-
-
 
 									let xaxis_demographics= 310
 									let xaxis_cip= 470
@@ -790,8 +781,6 @@ h3 {
 										.attr('y', xaxis_cip - subtitle_margin)
 										.text('CIP Destination of First Transfer ' + ay + ' Grad Class, ' + clicked)
 
-								
-
 									svg2.selectAll('.age-rect')
 										.data(age_nest)
 										.enter()
@@ -815,7 +804,6 @@ h3 {
 									   		d3.selectAll('.market-hover')
 									   			.remove()
 									   	})
-
 
 									svg2.selectAll('.age_xaxis')
 										.data(age_nest)
@@ -843,13 +831,9 @@ h3 {
 										.attr('height', function(d){return bar3_scale(d.values['students']);})
 										.attr('opacity', 0.6)
 										.style('visibility', 'visible')
-
 									    .on('mouseover', function(d, i){
 									   		d3.select(this)
 									   			.attr('opacity', 1)
-
-
-
 											mouse_hover(d, d.values['helper'], xaxis_cip)
 										 })
 									   	.on('mouseout', function(d, i){
@@ -858,44 +842,13 @@ h3 {
 									   		d3.selectAll('.market-hover')
 									   			.remove()
 									   	})
-
-
-
-
-
 								 }
-
 								 d3.csv('demographics_data.csv', demographics)
-
-								 
 							})
 						})
-							
-
-							
-
-
-                
-					
 				}
-
-
-				
-
-
 			}
-
-		
-
 			d3.csv('new_grads.csv', plotting)
-
-
-
-
-			
-
-
-
 		}
 	</script>
 </head>
@@ -903,10 +856,5 @@ h3 {
 	<script type="text/javascript">
 		d3.json("bcGeo.json", draw); 
 	</script>
-
-
-
-
-
 </body>
 </html>

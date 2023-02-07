@@ -1932,8 +1932,8 @@ margin-left: 100px;
 margin-right: auto;
 }
 </style>
-<div id="trades-transfer-groups-by-program---visualization" class="section level1 tabset tabset-pills">
-<h1 class="tabset tabset-pills">Trades Transfer Groups by Program -
+<div id="trades-transition-groups-by-program---visualization" class="section level1 tabset tabset-pills">
+<h1 class="tabset tabset-pills">Trades Transition Groups by Program -
 Visualization</h1>
 <div id="how-to-use-me-guide" class="section level2 tabset">
 <h2 class="tabset">How-To Use Me Guide</h2>
@@ -1942,8 +1942,8 @@ Visualization</h1>
 <p>The following analysis uses an interactive version of a “Sankey”
 graph. These visualizations demonstrate the flow from one group to
 another. For example:</p>
-<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1864693becb218d043a8" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-1864693becb218d043a8">{"x":{"links":{"source":[0,0,4,4],"target":[1,5,0,1],"value":[15,20,35,6]},"nodes":{"name":["1","2","3","4","New Student","No further studies"],"group":["1","2","3","4","New Student","No further studies"]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
+<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-63066ca4571632cacb85" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-63066ca4571632cacb85">{"x":{"links":{"source":[0,0,4,4],"target":[1,5,0,1],"value":[15,20,35,6]},"nodes":{"name":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"],"group":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"]},"options":{"NodeID":"nodeName","NodeGroup":"nodeName","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
 <p>The above Sankey (#fakedata) demonstrates how students move through
 levels in a program. In this case, 35 new students entered into the
 level 1 program. Of those 35, 15 transferred to the level 2 program,
@@ -1977,102 +1977,282 @@ different CIP codes.</li>
 <h2 class="tabset">Program-Specific Sankeys</h2>
 <div id="electrical" class="section level3">
 <h3>Electrical</h3>
-<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5dfbb66243c4cea1f970" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-5dfbb66243c4cea1f970">{"x":{"links":{"source":[4,0,4,1,4,2,4,0,3,1,2],"target":[0,1,1,2,2,3,3,5,5,5,5],"value":[566,193,69,154,49,143,53,379,192,106,58]},"nodes":{"name":["1","2","3","4","New Student","No further studies"],"group":["1","2","3","4","New Student","No further studies"]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
+<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-d0312ea7237817c5a59c" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-d0312ea7237817c5a59c">{"x":{"links":{"source":[4,0,4,1,4,2,4,0,3,1,2],"target":[0,1,1,2,2,3,3,5,5,5,5],"value":[566,193,69,154,49,143,53,379,192,106,58]},"nodes":{"name":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"],"group":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"]},"options":{"NodeID":"nodeName","NodeGroup":"nodeName","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="carpentry" class="section level3">
 <h3>Carpentry</h3>
-<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-946cc38556129891ba2c" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-946cc38556129891ba2c">{"x":{"links":{"source":[4,0,4,1,4,2,4,0,3,1,2],"target":[0,1,1,2,2,3,3,5,5,5,5],"value":[796,270,75,162,77,171,35,530,196,173,67]},"nodes":{"name":["1","2","3","4","New Student","No further studies"],"group":["1","2","3","4","New Student","No further studies"]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
+<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-016fc2a25b4122b968dd" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-016fc2a25b4122b968dd">{"x":{"links":{"source":[4,0,4,1,4,2,4,0,3,1,2],"target":[0,1,1,2,2,3,3,5,5,5,5],"value":[796,270,75,162,77,171,35,530,196,173,67]},"nodes":{"name":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"],"group":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"]},"options":{"NodeID":"nodeName","NodeGroup":"nodeName","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="automotive" class="section level3">
 <h3>Automotive</h3>
-<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-8bb1aec0a021b829a89a" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-8bb1aec0a021b829a89a">{"x":{"links":{"source":[4,0,4,1,4,2,4,0,3,1,2],"target":[0,1,1,2,2,3,3,5,5,5,5],"value":[165,24,14,23,9,27,4,141,31,15,5]},"nodes":{"name":["1","2","3","4","New Student","No further studies"],"group":["1","2","3","4","New Student","No further studies"]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
+<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5fa404a6e069a2bfb68f" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-5fa404a6e069a2bfb68f">{"x":{"links":{"source":[4,0,4,1,4,2,4,0,3,1,2],"target":[0,1,1,2,2,3,3,5,5,5,5],"value":[165,24,14,23,9,27,4,141,31,15,5]},"nodes":{"name":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"],"group":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"]},"options":{"NodeID":"nodeName","NodeGroup":"nodeName","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="professional-cook" class="section level3">
 <h3>Professional Cook</h3>
-<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-c760595df3e8e1a5a1db" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-c760595df3e8e1a5a1db">{"x":{"links":{"source":[4,0,4,1,4,0,1,2],"target":[0,1,1,2,2,5,5,5],"value":[397,171,7,17,7,229,153,24]},"nodes":{"name":["1","2","3","4","New Student","No further studies"],"group":["1","2","3","4","New Student","No further studies"]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
+<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-308d191fbdf1b8eb2ba3" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-308d191fbdf1b8eb2ba3">{"x":{"links":{"source":[4,0,4,1,4,0,1,2],"target":[0,1,1,2,2,5,5,5],"value":[397,171,7,17,7,229,153,24]},"nodes":{"name":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"],"group":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"]},"options":{"NodeID":"nodeName","NodeGroup":"nodeName","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="heavy-duty-mechanics" class="section level3">
 <h3>Heavy Duty Mechanics</h3>
-<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-a8e6b8459d44e1650e66" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-a8e6b8459d44e1650e66">{"x":{"links":{"source":[4,0,4,1,4,0,1,2],"target":[0,1,1,2,2,5,5,5],"value":[182,17,11,10,2,165,18,12]},"nodes":{"name":["1","2","3","4","New Student","No further studies"],"group":["1","2","3","4","New Student","No further studies"]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
+<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-28a3da24e5008698db8a" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-28a3da24e5008698db8a">{"x":{"links":{"source":[4,0,4,1,4,0,1,2],"target":[0,1,1,2,2,5,5,5],"value":[182,17,11,10,2,165,18,12]},"nodes":{"name":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"],"group":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"]},"options":{"NodeID":"nodeName","NodeGroup":"nodeName","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="millwright" class="section level3">
 <h3>Millwright</h3>
-<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9f23f193af815706e639" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-9f23f193af815706e639">{"x":{"links":{"source":[4,0,4,0,1],"target":[0,1,1,5,5],"value":[178,18,24,160,42]},"nodes":{"name":["1","2","3","4","New Student","No further studies"],"group":["1","2","3","4","New Student","No further studies"]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
+<div class="sankeyNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-eee1ae66baa0777c24dd" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-eee1ae66baa0777c24dd">{"x":{"links":{"source":[4,0,4,0,1],"target":[0,1,1,5,5],"value":[178,18,24,160,42]},"nodes":{"name":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"],"group":["Level 1 ","Level 2 ","Level 3 ","Level 4 ","New Student","No further studies"]},"options":{"NodeID":"nodeName","NodeGroup":"nodeName","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":14,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"students","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
-<div id="trades-attrition-rates-by-program---tabular-data" class="section level1">
-<h1>Trades Attrition Rates by Program - Tabular Data</h1>
+<div id="trades-attrition-rates-by-program---tabular-data" class="section level1 tabset tabset-pills">
+<h1 class="tabset tabset-pills">Trades Attrition Rates by Program -
+Tabular Data</h1>
+<div id="trades-table-data" class="section level2">
+<h2>Trades Table Data</h2>
 <p><b>Attrition Rate</b> - Attrition Rates are defined as the % of
 students who <i><u>do not</u></i> register for the subsequent level of
 the program.</p>
 <p>Mathematically, it can be defined as: <span class="math display">\[
 Attrition=1-\frac{Registrants_{current}}{Registrants_{previous}}
-\]</span> Therefore, if an attrition rate is 0.65 for Level 1 to Level
-2, that indicates that 65% of the Level 1 cohort <b><u>do not</u></b>
-continue to Level 2.</p>
+\]</span></p>
+<p>Therefore, if an attrition rate is 0.65 for Level 1 to Level 2, that
+indicates that 65% of the Level 1 cohort <b><u>do not</u></b> continue
+to Level 2.</p>
 <table>
 <colgroup>
-<col width="40%" />
-<col width="20%" />
-<col width="20%" />
-<col width="20%" />
+<col width="45%" />
+<col width="18%" />
+<col width="18%" />
+<col width="18%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="left">progGroup</th>
-<th align="right">AttritionRateLevel1toLevel2</th>
-<th align="right">AttritionRateLevel2toLevel3</th>
-<th align="right">AttritionRateLevel3toLevel4</th>
+<th align="left">AttritionRateLevel1toLevel2</th>
+<th align="left">AttritionRateLevel2toLevel3</th>
+<th align="left">AttritionRateLevel3toLevel4</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">Automobile/automotive mechanics
 technology/technician</td>
-<td align="right">0.85</td>
-<td align="right">0.39</td>
-<td align="right">0.16</td>
+<td align="left">85%</td>
+<td align="left">39%</td>
+<td align="left">16%</td>
 </tr>
 <tr class="even">
+<td align="left">Building/property maintenance</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
 <td align="left">Carpentry/carpenter</td>
-<td align="right">0.66</td>
-<td align="right">0.53</td>
-<td align="right">0.28</td>
+<td align="left">66%</td>
+<td align="left">53%</td>
+<td align="left">28%</td>
+</tr>
+<tr class="even">
+<td align="left">Construction trades, general</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Construction/heavy equipment/earthmoving equipment
+operation</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Cosmetology/cosmetologist, general</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">Electrician</td>
-<td align="right">0.66</td>
-<td align="right">0.41</td>
-<td align="right">0.30</td>
+<td align="left">66%</td>
+<td align="left">41%</td>
+<td align="left">30%</td>
 </tr>
 <tr class="even">
 <td align="left">Food preparation/professional cooking/kitchen
 assistant</td>
-<td align="right">0.57</td>
-<td align="right">0.90</td>
-<td align="right">NA</td>
+<td align="left">57%</td>
+<td align="left">90%</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">Heavy equipment maintenance technology/technician</td>
-<td align="right">0.91</td>
-<td align="right">0.64</td>
-<td align="right">NA</td>
+<td align="left">Hair styling/stylist and hair design</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
+<td align="left">Heavy equipment maintenance technology/technician</td>
+<td align="left">91%</td>
+<td align="left">64%</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
 <td align="left">Machine tool technology/machinist</td>
-<td align="right">0.90</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">90%</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Nail technician/specialist and manicurist</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Parts and warehousing operations and maintenance
+technology/technician</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Plumbing technology/plumber</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Welding technology/welder</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="trades-table---removing-unsuccessful-students" class="section level2">
+<h2>Trades Table - Removing Unsuccessful Students</h2>
+<p>Examining the same data, but removing students who were unable to
+complete the program, and thus ineligible for the subsequent level.
+While the attrition rate does decrease for all programs, the differences
+are minor across the board.</p>
+<table>
+<colgroup>
+<col width="45%" />
+<col width="18%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">progGroup</th>
+<th align="left">AttritionRateLevel1toLevel2</th>
+<th align="left">AttritionRateLevel2toLevel3</th>
+<th align="left">AttritionRateLevel3toLevel4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Automobile/automotive mechanics
+technology/technician</td>
+<td align="left">83%</td>
+<td align="left">39%</td>
+<td align="left">16%</td>
+</tr>
+<tr class="even">
+<td align="left">Building/property maintenance</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Carpentry/carpenter</td>
+<td align="left">57%</td>
+<td align="left">52%</td>
+<td align="left">26%</td>
+</tr>
+<tr class="even">
+<td align="left">Construction trades, general</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Construction/heavy equipment/earthmoving equipment
+operation</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Cosmetology/cosmetologist, general</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Electrician</td>
+<td align="left">59%</td>
+<td align="left">40%</td>
+<td align="left">30%</td>
+</tr>
+<tr class="even">
+<td align="left">Food preparation/professional cooking/kitchen
+assistant</td>
+<td align="left">51%</td>
+<td align="left">90%</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Hair styling/stylist and hair design</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Heavy equipment maintenance technology/technician</td>
+<td align="left">90%</td>
+<td align="left">64%</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Machine tool technology/machinist</td>
+<td align="left">89%</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Nail technician/specialist and manicurist</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Parts and warehousing operations and maintenance
+technology/technician</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Plumbing technology/plumber</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Welding technology/welder</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 

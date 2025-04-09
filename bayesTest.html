@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bayesian Visualization with Stacked Prior</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .container { max-width: 950px; margin: auto; }
+    .chart-container { display: flex; justify-content: space-between; flex-wrap: wrap; }
+    .chart-box { width: 45%; margin-bottom: 40px; }
+    .slider-container { margin-bottom: 20px; }
+  </style>
+  <!-- Include Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Bayesian Visualization with Stacked Prior</h2>
+    <p>
+      Hypotheses:
+      <br>
+      <strong>H1:</strong> No error (match probability = 0.7) with prior 0.9 (green)
+      <br>
+      <strong>H2:</strong> Error (match probability = 0.3) with prior 0.1 (red)
+    </p>
+    <div class="slider-container">
+      <p>Number of Trials (n) = 31. Use the slider to set the number of observed matches (k):</p>
+      <input type="range" min="0" max="31" value="16" id="matchSlider" style="width: 100%;">
+      <p>Number of Matches: <span id="matchValue">16</span></p>
+    </div>
+    <div class="chart-container">
+      <div class="chart-box">
+        <h3>Prior Predictive Distribution (Stacked)</h3>
+        <canvas id="priorChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Posterior Distribution (Dynamic)</h3>
+        <canvas id="posteriorChart"></canvas>
+      </div>
+    </div>
+    <p id="posteriorText"></p>
+    <p id="bayesFactorText"></p>
+  </div>
+
+  <script>
+    // Set constants and priors
+    const n = 31;
+    const P_H1 = 0.9, P_H2 = 0.1;
+    const p1 = 0.7, p2 = 0.3;
+
+    // Factorial (iterative – suitable for n <= 31)
+    function factorial(num) {
+      let result = 1;
+      for (let i = 2; i <= num; i++) {
+        result *= i;
+      }
+      return result;
+    }
+
+    // Binomial coefficient: C(n, k)
+    function binom(n, k) {
+      return factorial(n) / (factorial(k) * factorial(n - k));
+    }
+
+    // Binomial likelihood for given k, n, and probability p
+    function likelihood(n, k, p) {
+      return binom(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
+    }
+
+    // For the prior predictive distribution, we compute two arrays:
+    // one for H1 (matches) and one for H2 (mismatches)
+    const kValues = [];
+    const priorMatches = [];    // H1: 0.9 * likelihood(n, k, 0.7)
+    const priorMismatches = []; // H2: 0.1 * likelihood(n, k, 0.3)
+
+    for (let k = 0; k <= n; k++) {
+      kValues.push(k);
+      priorMatches.push(P_H1 * likelihood(n, k, p1));
+      priorMismatches.push(P_H2 * likelihood(n, k, p2));
+    }
+
+    // Create the stacked prior predictive chart
+    const ctxPrior = document.getElementById("priorChart").getContext("2d");
+    const priorChart = new Chart(ctxPrior, {
+      type: 'bar',
+      data: {
+        labels: kValues,
+        datasets: [{
+          label: 'Matches Contribution',
+          data: priorMatches,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',  // greenish
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        },
+        {
+          label: 'Mismatches Contribution',
+          data: priorMismatches,
+          backgroundColor: 'rgba(255, 99, 132, 0.6)',   // reddish
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: {
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+          }
+        },
+        responsive: true,
+        scales: {
+          x: {
+            stacked: true,
+            title: { display: true, text: "Number of Matches (k)" }
+          },
+          y: {
+            stacked: true,
+            title: { display: true, text: "Probability" }
+          }
+        }
+      }
+    });
+
+    // Create the dynamic posterior chart
+    // We display two horizontal bars: Posterior for H1 and Posterior for H2.
+    const ctxPosterior = document.getElementById("posteriorChart").getContext("2d");
+    const posteriorChart = new Chart(ctxPosterior, {
+      type: 'bar',
+      data: {
+        labels: ['H1 (No Error)', 'H2 (Error)'],
+        datasets: [{
+          label: 'Posterior Probability',
+          data: [0.5, 0.5],
+          backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+          borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        scales: {
+          x: {
+            min: 0,
+            max: 1,
+            title: { display: true, text: "Probability" }
+          }
+        }
+      }
+    });
+
+    // Function to compute posterior probability for H1 given observed matches k
+    function computePosterior(k) {
+      const L1 = likelihood(n, k, p1);
+      const L2 = likelihood(n, k, p2);
+      const numerator = L1 * P_H1;
+      const denominator = numerator + L2 * P_H2;
+      return numerator / denominator;
+    }
+
+    // Compute Bayes Factor BF = L1 / L2 for observed k
+    function computeBayesFactor(k) {
+      const L1 = likelihood(n, k, p1);
+      const L2 = likelihood(n, k, p2);
+      return L1 / L2;
+    }
+
+    // Function to update the dynamic posterior chart and Bayes Factor
+    function updatePosterior() {
+      const k = parseInt(document.getElementById("matchSlider").value);
+      document.getElementById("matchValue").textContent = k;
+      const posteriorH1 = computePosterior(k);
+      const posteriorH2 = 1 - posteriorH1;
+      posteriorChart.data.datasets[0].data = [posteriorH1, posteriorH2];
+      posteriorChart.update();
+      const bf = computeBayesFactor(k);
+      document.getElementById("posteriorText").innerHTML = 
+        `<strong>For k = ${k} matches:</strong><br>
+         Posterior P(H1|E=k) = ${posteriorH1.toFixed(6)}<br>
+         Posterior P(H2|E=k) = ${posteriorH2.toFixed(6)}`;
+      document.getElementById("bayesFactorText").innerHTML =
+         `<strong>Bayes Factor (BF = L1/L2):</strong> ${bf.toFixed(6)}`;
+    }
+
+    // Add listener to slider and initialize display
+    document.getElementById("matchSlider").addEventListener("input", updatePosterior);
+    updatePosterior();
+  </script>
+</body>
+</html>
